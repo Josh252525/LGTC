@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Created by https://www.toptal.com/developers/gitignore/api/maven,eclipse,java,linux,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven,eclipse,java,linux,windows
 
@@ -66,6 +67,10 @@ local.properties
 ### Eclipse Patch ###
 # Spring Boot Tooling
 .sts4-cache/
+=======
+# Created by https://www.toptal.com/developers/gitignore/api/maven,java,linux,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=maven,java,linux,windows
+>>>>>>> ed0f494 (Primer commit añadiendo el .gitignore)
 
 ### Java ###
 # Compiled class file
@@ -153,4 +158,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+<<<<<<< HEAD
 # End of https://www.toptal.com/developers/gitignore/api/maven,eclipse,java,linux,windows
+=======
+# End of https://www.toptal.com/developers/gitignore/api/maven,java,linux,windows
+>>>>>>> ed0f494 (Primer commit añadiendo el .gitignore)
