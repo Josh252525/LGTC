@@ -15,7 +15,7 @@ public class JsonParser {
         Gson gson = new Gson();
         
         try (Reader reader = new FileReader(rutaArchivo)) {
-            // Gson lee el texto y lo inyecta automáticamente en tus Records
+            // Gson lee el texto y lo inyecta automáticamente en los Records
             ConfigLogisTEC configuracion = gson.fromJson(reader, ConfigLogisTEC.class);
             
             System.out.println("¡JSON de LogísTEC parseado con éxito!");
