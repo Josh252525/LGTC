@@ -19,3 +19,7 @@ public record Camion(String id, double capacidad) {}
 
 // Contenedor principal que agrupa todo el JSON
 public record ConfigLogisTEC(Ciudad ciudad, List<Paquete> paquetes, List<Camion> camiones) {}
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
