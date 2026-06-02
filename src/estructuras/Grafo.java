@@ -9,7 +9,7 @@ import java.util.List;
 public class Grafo {
 	
 	private List<List<Conexion>> listaAdyacencia;
-	e
+
 	public Grafo(int vertices) {
 		listaAdyacencia = new ArrayList();
 		
@@ -25,8 +25,7 @@ public class Grafo {
 		
 	}
 	
-<<<<<<< Updated upstream
-=======
+
 	public List<List<Conexion>> getListaAdyacencia(){
 		return listaAdyacencia;
 	}
@@ -34,8 +33,7 @@ public class Grafo {
 	public int getCantidadVertices() {
 		return listaAdyacencia.size();
 	}
-	
->>>>>>> Stashed changes
+
 	public void imprimir() {
 		
 		for (int i = 0; i < listaAdyacencia.size(); i++) {
