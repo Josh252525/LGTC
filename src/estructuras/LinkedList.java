@@ -1,10 +1,17 @@
 package estructuras;
 
-public class LinkedList {
-    Node head;
+/*
+Lista Enlazada Simple convertida a Genérica (<T>).
+Al utilizar <T>, esta misma lista sirve para cualquier tipo de dato entonces está R.
+- LinkedList<Integer> para la Pila/Cola.
+- LinkedList<Conexion> para el Grafo.
+- LinkedList<Paquete> para el Validador de Paquetes.
+*/
+public class LinkedList<T> {
+    Node<T> head;
 
-    public void insert(int data){
-        Node node = new Node();
+    public void insert(T data){
+        Node<T> node = new Node<>();
         node.data = data;
         node.next = null;
 
@@ -12,86 +19,97 @@ public class LinkedList {
             head = node;
         }
         else{
-            Node n = head;
-            while(n.next!=null){
+            Node<T> n = head;
+            while(n.next != null){
                 n = n.next;
             }
             n.next = node;
         }
     }
 
-    public void insertAtStart(int data){
-        Node node = new Node();
+    public void insertAtStart(T data){
+        Node<T> node = new Node<>();
         node.data = data;
         node.next = null;
+        
         node.next = head;
         head = node;
     }
 
-    public void insertAt(int index, int data){
-        Node node = new Node();
+    public void insertAt(int index, T data){
+        if(index == 0){
+            insertAtStart(data);
+            return;
+        }
+        
+        Node<T> node = new Node<>();
         node.data = data;
         node.next = null;
 
-        if(index == 0){
-            insertAtStart(data);
+        Node<T> n = head;
+        for (int i = 0; i < index - 1; i++) {
+            if (n == null) return; // Protección por si el índice es mayor al tamaño
+            n = n.next;
         }
-        else {
-            Node n = head;
-            for (int i = 0; i < index - 1; i++) {
-                n = n.next;
-            }
-            node.next = n.next;
-            n.next = node;
-        }
+        node.next = n.next;
+        n.next = node;
     }
 
     public void deleteAt(int index) {
+        if (head == null) return; // Protección si la lista está vacía
+
         if(index == 0){
             head = head.next;
         }
         else{
-            Node n = head;
-            Node n1 = null;
-
+            Node<T> n = head;
             for (int i = 0; i < index - 1; i++) {
+                if (n.next == null) return; // Protección de límites
                 n = n.next;
             }
-            n1 = n.next;
-            n.next = n1.next;
-            n1 = null;
+            Node<T> n1 = n.next;
+            if (n1 != null) {
+                n.next = n1.next;
+                n1 = null; // Liberamos memoria (Garbage Collector)
+            }
         }
     }
 
-    //retorna el dato del nodo en la posicion index
-    public int getAt(int index){
-        Node n = head;
+    // Retorna el dato del nodo en la posición index 
+    public T getAt(int index){
+        Node<T> n = head;
 
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index; i++) {
+            if (n == null) return null;
             n = n.next;
         }
-        return n.data;
+        return n != null ? n.data : null;
     }
 
-    //retorna posicion del nodo con el valor que se busca
-    public int searchFor(int data){
-        Node node = head;
-        int contador = 0;
+    // Retorna la posición del nodo con el valor que se busca
+    public int searchFor(T data){
+        Node<T> node = head;
+        int index = 0;
 
-        while(node.data != data){
+        while(node != null){
+            // Usamos .equals() porque 'data' es un Objeto 
+            if(node.data.equals(data)){
+                return index;
+            }
+            index++;
             node = node.next;
-            contador++;
         }
-        return contador;
+        return -1; // -1 es el estándar para "No se encontró"
     }
 
-    public void show(){
-        Node node = head;
-
-        while(node.next!=null){
-            System.out.println(node.data);
-            node = node.next;
+    // Nuevo método ÚTIL PARA EL GRAFO: Saber el tamaño de la lista
+    public int size() {
+        int count = 0;
+        Node<T> n = head;
+        while(n != null) {
+            count++;
+            n = n.next;
         }
-        System.out.println(node.data);
+        return count;
     }
 }

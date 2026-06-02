@@ -1,13 +1,10 @@
 package estructuras;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import Datos.Arista;
-import Datos.Ciudad;
-import Datos.ConfigLogisTEC;
-import Datos.Paquete;
-import Datos.Vertice;
+import datos.Arista;
+import datos.Ciudad;
+import datos.ConfigLogisTEC;
+import datos.Paquete;
+import datos.Vertice;
 
 public class ValidadorPaquetes {
 	
@@ -19,22 +16,16 @@ public class ValidadorPaquetes {
 	
 	public int encontrarDeposito() {
 		for(Vertice vertice : config.ciudad().vertices()) {
-			
 			if(vertice.tipo().equalsIgnoreCase("DEPOT")) {
 				return vertice.id();
 			}
 		}
-		
-		//Si el cliente tiene la maravillosa idea de no poner depósito:
 		throw new IllegalStateException("No existe deposito en la ciudad"); 
-			
 	}
 	
-	//Aquí abajo se construye la ciudad a un grafo. 
 	public Grafo construirGrafo() {
 		Ciudad ciudad = config.ciudad();
-		
-		Grafo grafo = new Grafo(ciudad.vertices().size());
+		Grafo grafo = new Grafo(ciudad.vertices().length);
 		
 		for(Arista arista : ciudad.aristas()) {
 			grafo.agregarArista(arista.u(), arista.v(), arista.distancia());
@@ -42,23 +33,25 @@ public class ValidadorPaquetes {
 		return grafo;
 	}
 	
-	//Aquí abajo devuelve una lista con los paquetes rechazados.
-	public List<Paquete> validarPaquetes(){
+	public LinkedList<Paquete> validarPaquetes(){
 		
-		List<Paquete> rechazados = new ArrayList<>();
+		// 1. Usamos nuestra propia LinkedList genérica
+		LinkedList<Paquete> rechazados = new LinkedList<>();
 		
 		int deposito = encontrarDeposito();
-		
-		
 		Grafo grafo = construirGrafo();
+		
+		// 2. Ejecutamos el algoritmo de Warshall
 		Warshall warshall = new Warshall(grafo);
 		
+		// 3. Revisamos paquete por paquete del JSON
 		for(Paquete paquete : config.paquetes()) {
-			if(!warshall.esAlcanzable(deposito, paquete.destino())) {
-				rechazados.add(paquete);
-			}
+		    // Si el destino del paquete NO es alcanzable desde el depósito...
+		    if(!warshall.esAlcanzable(deposito, paquete.destino())) {
+		        rechazados.insert(paquete); // ...lo agregamos a la lista de rechazados
+		    }
 		}
+		
 		return rechazados;
 	}
-
 }

@@ -1,8 +1,13 @@
 package estructuras;
-//La idea de la Cola de prioridad es devolver el elemento con menor costo/prioridad.
-//La usamos en Dijsktra y Prim. 
-//Ej: Si A = 3, B = 1 y C = 2, devuelve B.
 
+/*
+Complejidad: O(log V) para inserciones y extracciones. 
+
+CORRECCIONES APLICADAS:
+1. Se cambió el parámetro 'prioridad' a double en el método insert().
+2. Se completó el método extraerMin() que es el que Dijkstra llama para sacar 
+   el vértice más cercano de la cola.
+*/
 public class ColaPrioridad {
 	
 	private NodoHeap[] heap;
@@ -19,79 +24,85 @@ public class ColaPrioridad {
 		return size == 0;
 	}
 	
-	public void insert(int vertice, int prioridad) {
+	// Ahora recibe un double para no perder los decimales de las distancias
+	public void insert(int vertice, double prioridad) {
+        // Si el heap se llena, se evita que el programa colapse
+        if (size == capacidad) {
+            System.out.println("Cola de prioridad llena");
+            return;
+        }
+
 		NodoHeap nuevoNodo = new NodoHeap(vertice, prioridad);
-		
 		heap[size] = nuevoNodo;
 		
-		
 		heapifyUp(size);
-		
 		size++;
 	}
+
+    // Método que necesita el Dijkstra para sacar al que tiene menor distancia
+    public NodoHeap extraerMin() {
+        if (isEmpty()) {
+            return null;
+        }
+
+        // El mínimo siempre está en la raíz (posición 0) en un Min-Heap
+        NodoHeap min = heap[0];
+
+        // Se mueve el último elemento del arreglo a la raíz
+        heap[0] = heap[size - 1];
+        heap[size - 1] = null; // Fucking limpiando la vara porque ajá
+        size--;
+
+        // Reorganizamos hacia abajo para que el nuevo nodo en la raíz baje a su lugar correcto
+        heapifyDown(0);
+
+        return min;
+    }
 	
-	//El heapify up hace que el elemento insertado suba si es menor a su padre.
-	public void heapifyUp(int index) {
-		
+	// El heapifyUp hace que el elemento insertado suba si es menor a su padre.
+	private void heapifyUp(int index) {
 		while (index > 0) {
-			int padre = (index - 1)/2;
+			int padre = (index - 1) / 2;
 			
-			//Si su prioridad es menor a la de su padre.
-			if(heap[index].prioridad < heap[padre].prioridad){
-				//Guardamos referencia del papa
+			// Si su prioridad es menor a la de su padre, se intercambian
+			if (heap[index].prioridad < heap[padre].prioridad) {
 				NodoHeap temp = heap[index];
-				//El heap en la posición del index ahora es igual a la posición del padre, subiendo.
 				heap[index] = heap[padre];
-				//El padre está ahora en la posición donde estaba el index.
 				heap[padre] = temp;
 				
-				index = padre;
-			}else {
-				break;
+				index = padre; // Seguimos subiendo
+			} else {
+				break; // Si ya es mayor que el padre, está en su lugar correcto
 			}
 		}
 	}
 	
-	//heapifyDown hace que al sacar el mínimo se reorganiza el árbol.
-	//Baja el elemento hasta llevarlo a donde pertenence.
-	public void heapifyDown(int index) {
+	// Baja el elemento hasta llevarlo a donde pertenece.
+	private void heapifyDown(int index) {
 		while (true) {
 			int izquierda = 2 * index + 1;
 			int derecha = 2 * index + 2;
-			
 			int menor = index;
 			
+			// Comparamos con el hijo izquierdo
 			if (izquierda < size && heap[izquierda].prioridad < heap[menor].prioridad) {
 				menor = izquierda;
 			}
+			// Comparamos con el hijo derecho
 			if (derecha < size && heap[derecha].prioridad < heap[menor].prioridad) {
 				menor = derecha;
 			}
-			if(menor != index) {
+			
+			// Si el menor ya no es el padre original, intercambiamos
+			if (menor != index) {
 				NodoHeap temp = heap[index];
 				heap[index] = heap[menor];
 				heap[menor] = temp;
 				
-				index = menor;
-			}else {
+				index = menor; // Seguimos bajando
+			} else {
 				break;
 			}
 		}
 	}
-	
-	//extraerMin() no solo devuelve el peso, sino el nodo completo. Cada nodo tiene vertice y prioridad.
-	public NodoHeap extraerMin() {
-		if(isEmpty()) {
-			return null;
-		}
-		
-		NodoHeap minimo = heap[0];
-		heap[0] = heap[size-1];
-		size--;
-		heapifyDown(0);
-		return minimo;
-		
-	}
-	
-
 }
