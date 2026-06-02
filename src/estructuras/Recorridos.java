@@ -1,7 +1,5 @@
 package estructuras;
 
-//Clase encargada de realizar los recorridos estándar sobre el Grafo.
-
 public class Recorridos {
 	
 	private Grafo grafo;
@@ -10,79 +8,55 @@ public class Recorridos {
 		this.grafo = grafo;
 	}
 	
-	// --- BFS: BÚSQUEDA EN AMPLITUD ---
-	public void bfs(int nodoInicial) {
+	public LinkedList<Integer> bfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
 		boolean[] visitado = new boolean[cantidadVertices];
-		
-		// Usamos nuestra propia Cola genérica
 		Cola<Integer> cola = new Cola<>();
+		LinkedList<Integer> resultado = new LinkedList<>(); // Guardará el recorrido
 		
 		visitado[nodoInicial] = true;
 		cola.insert(nodoInicial);
 		
-		System.out.print("Recorrido BFS desde intersección " + nodoInicial + ": ");
-		
 		while (!cola.isEmpty()) {
-			// Sacamos al primero de la fila
 			int actual = cola.remove();
-			System.out.print(actual + " ");
+			resultado.insert(actual); // Lo agregamos al resultado
 			
-			// Obtenemos los vecinos usando nuestra LinkedList
 			LinkedList<Conexion> vecinos = grafo.getVecinos(actual);
-			int cantidadVecinos = vecinos.size();
-			
-			// Iteramos con un for clásico
-			for (int i = 0; i < cantidadVecinos; i++) {
-				Conexion conexion = vecinos.getAt(i);
-				int destino = conexion.destino;
-				
-				// Si no hemos visitado a este vecino, lo marcamos y lo encolamos
+			for (int i = 0; i < vecinos.size(); i++) {
+				int destino = vecinos.getAt(i).destino;
 				if (!visitado[destino]) {
 					visitado[destino] = true;
 					cola.insert(destino);
 				}
 			}
 		}
-		System.out.println(); // Salto de línea final
+		return resultado;
 	}
 	
-	// --- DFS: BÚSQUEDA EN PROFUNDIDAD (Iterativo) ---
-	public void dfs(int nodoInicial) {
+	public LinkedList<Integer> dfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
 		boolean[] visitado = new boolean[cantidadVertices];
-		
-		// Usamos nuestra propia Pila genérica
 		Pila<Integer> pila = new Pila<>();
+		LinkedList<Integer> resultado = new LinkedList<>(); // Guardará el recorrido
 		
 		pila.push(nodoInicial);
 		
-		System.out.print("Recorrido DFS desde intersección " + nodoInicial + ": ");
-		
 		while (!pila.isEmpty()) {
-			// Sacamos al que está en el tope de la pila
 			int actual = pila.pop();
 			
-			// En el DFS con Pila, verificamos si fue visitado justo al sacarlo
 			if (!visitado[actual]) {
 				visitado[actual] = true;
-				System.out.print(actual + " ");
+				resultado.insert(actual); // Lo agregamos al resultado
 				
-				// Buscamos a sus vecinos
 				LinkedList<Conexion> vecinos = grafo.getVecinos(actual);
-				int cantidadVecinos = vecinos.size();
-				
-				// Metemos a todos los vecinos no visitados a la pila
-				for (int i = 0; i < cantidadVecinos; i++) {
-					Conexion conexion = vecinos.getAt(i);
-					int destino = conexion.destino;
-					
+				for (int i = 0; i < vecinos.size(); i++) {
+					int destino = vecinos.getAt(i).destino;
 					if (!visitado[destino]) {
 						pila.push(destino);
 					}
 				}
 			}
 		}
-		System.out.println(); // Salto de línea final
+		return resultado;
 	}
 }
