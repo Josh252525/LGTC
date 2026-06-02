@@ -1,4 +1,4 @@
-package Datos;
+package datos;
 
 //Model Vertices: Propiedades id, tipo, x, y
 

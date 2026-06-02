@@ -1,4 +1,4 @@
-package Datos;
+package datos;
 
 import com.google.gson.Gson;
 import java.io.FileReader;

@@ -15,14 +15,14 @@ public class MainPruebaDijkstra {
 		grafo.agregarArista(2, 3, 5);
 		grafo.agregarArista(3, 4, 3);
 		
-		int[] resultado = ejemplo.calcular(0);
+		double[] resultado = ejemplo.calcular(0);
 
 		for(int i = 0; i < resultado.length; i++) {
 		    System.out.println(
 		        "Distancia a " +
 		        i +
 		        ": " +
-		        resultado[i]
+		        resultado[i] + "km"
 		    );
 		}
 		

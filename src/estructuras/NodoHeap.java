@@ -3,7 +3,7 @@ package estructuras;
 public class NodoHeap {
 	
 	int vertice;
-	int prioridad;
+	double prioridad;
 	
 	public NodoHeap(int vertice, int prioridad) {
 		this.vertice = vertice;
