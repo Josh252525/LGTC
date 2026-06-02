@@ -1,4 +1,6 @@
-package estructuras;
+package pruebas;
+
+import datos.*;
 
 public class MainPruebaDijkstra {
 	
