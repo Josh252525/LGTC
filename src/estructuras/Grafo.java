@@ -25,6 +25,17 @@ public class Grafo {
 		
 	}
 	
+<<<<<<< Updated upstream
+=======
+	public List<List<Conexion>> getListaAdyacencia(){
+		return listaAdyacencia;
+	}
+	
+	public int getCantidadVertices() {
+		return listaAdyacencia.size();
+	}
+	
+>>>>>>> Stashed changes
 	public void imprimir() {
 		
 		for (int i = 0; i < listaAdyacencia.size(); i++) {
