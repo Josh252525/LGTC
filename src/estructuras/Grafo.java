@@ -30,9 +30,6 @@ public class Grafo {
 		return listaAdyacencia;
 	}
 	
-	public int getCantidadVertices() {
-		return listaAdyacencia.size();
-	}
 
 	public void imprimir() {
 		
