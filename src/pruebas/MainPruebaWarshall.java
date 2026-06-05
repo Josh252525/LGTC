@@ -1,4 +1,4 @@
-package estructuras;
+package pruebas;
 
 import datos.*; // Se importan los modelos
 
