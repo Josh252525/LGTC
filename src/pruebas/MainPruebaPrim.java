@@ -1,6 +1,7 @@
 package pruebas;
 
 import estructuras.*;
+import algoritmos.Prim;
 
 public class MainPruebaPrim {
 

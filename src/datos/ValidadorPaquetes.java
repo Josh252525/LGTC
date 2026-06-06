@@ -1,10 +1,6 @@
-package estructuras;
+package datos;
 
-import datos.Arista;
-import datos.Ciudad;
-import datos.ConfigLogisTEC;
-import datos.Paquete;
-import datos.Vertice;
+import estructuras.*;
 
 public class ValidadorPaquetes {
 	
