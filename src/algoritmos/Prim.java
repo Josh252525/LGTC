@@ -1,5 +1,6 @@
-package estructuras;
+package algoritmos;
 
+import estructuras.*;
 
 /*
  Implementación del algoritmo de Prim para calcular el Árbol de Expansión Mínima (MST) de un grafo no dirigido.
