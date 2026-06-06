@@ -1,6 +1,7 @@
 package pruebas;
 
 import datos.*;
+import estructuras.*;
 
 public class MainPruebaDijkstra {
 	

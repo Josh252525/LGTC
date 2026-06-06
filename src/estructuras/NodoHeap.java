@@ -5,7 +5,7 @@ public class NodoHeap {
 	int vertice;
 	double prioridad;
 	
-	public NodoHeap(int vertice, int prioridad) {
+	public NodoHeap(int vertice, double prioridad) {
 		this.vertice = vertice;
 		this.prioridad = prioridad;
 				

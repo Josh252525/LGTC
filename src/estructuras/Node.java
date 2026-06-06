@@ -2,10 +2,10 @@ package estructuras;
 
 public class Node<T> {
     T data;         // 'T' representa cualquier Tipo de objeto
-    Node<T> siguiente;
+    Node<T> next;
     
-    public Node(T data) {
-        this.data = data;
-        this.siguiente = null;
+    public Node() {
+        this.data = null;
+        this.next = null;
     }
 }
