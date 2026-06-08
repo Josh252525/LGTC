@@ -1,4 +1,4 @@
-package pruebas;
+package test;
 
 import estructuras.*;
 import algoritmos.Prim;

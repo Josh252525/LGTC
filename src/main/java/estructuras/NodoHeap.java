@@ -2,8 +2,8 @@ package estructuras;
 
 public class NodoHeap {
 	
-	int vertice;
-	double prioridad;
+	public int vertice;
+	public double prioridad;
 	
 	public NodoHeap(int vertice, double prioridad) {
 		this.vertice = vertice;

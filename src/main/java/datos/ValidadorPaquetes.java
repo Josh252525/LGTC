@@ -1,6 +1,7 @@
 package datos;
 
 import estructuras.*;
+import algoritmos.Warshall;
 
 public class ValidadorPaquetes {
 	

@@ -12,16 +12,26 @@ public class Recorridos {
 	
 	public LinkedList<Integer> bfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
+		
+		// --- 🛡️ BLINDAJE CONTRA CASOS EXTREMOS ---
+		if (cantidadVertices == 0) {
+			return new LinkedList<>(); // Retorna lista vacía si el grafo no tiene nodos
+		}
+		if (nodoInicial < 0 || nodoInicial >= cantidadVertices) {
+			throw new IllegalArgumentException("Error: El nodo inicial " + nodoInicial + " no existe en el grafo.");
+		}
+		// -----------------------------------------
+
 		boolean[] visitado = new boolean[cantidadVertices];
 		Cola<Integer> cola = new Cola<>();
-		LinkedList<Integer> resultado = new LinkedList<>(); // Guardará el recorrido
+		LinkedList<Integer> resultado = new LinkedList<>(); 
 		
 		visitado[nodoInicial] = true;
 		cola.insert(nodoInicial);
 		
 		while (!cola.isEmpty()) {
 			int actual = cola.remove();
-			resultado.insert(actual); // Lo agregamos al resultado
+			resultado.insert(actual); 
 			
 			LinkedList<Conexion> vecinos = grafo.getVecinos(actual);
 			for (int i = 0; i < vecinos.size(); i++) {
@@ -37,9 +47,19 @@ public class Recorridos {
 	
 	public LinkedList<Integer> dfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
+		
+		// --- 🛡️ BLINDAJE CONTRA CASOS EXTREMOS ---
+		if (cantidadVertices == 0) {
+			return new LinkedList<>(); 
+		}
+		if (nodoInicial < 0 || nodoInicial >= cantidadVertices) {
+			throw new IllegalArgumentException("Error: El nodo inicial " + nodoInicial + " no existe en el grafo.");
+		}
+		// -----------------------------------------
+
 		boolean[] visitado = new boolean[cantidadVertices];
 		Pila<Integer> pila = new Pila<>();
-		LinkedList<Integer> resultado = new LinkedList<>(); // Guardará el recorrido
+		LinkedList<Integer> resultado = new LinkedList<>(); 
 		
 		pila.push(nodoInicial);
 		
@@ -48,7 +68,7 @@ public class Recorridos {
 			
 			if (!visitado[actual]) {
 				visitado[actual] = true;
-				resultado.insert(actual); // Lo agregamos al resultado
+				resultado.insert(actual); 
 				
 				LinkedList<Conexion> vecinos = grafo.getVecinos(actual);
 				for (int i = 0; i < vecinos.size(); i++) {

@@ -1,4 +1,4 @@
-package pruebas;
+package test;
 
 import datos.*;
 import estructuras.*;

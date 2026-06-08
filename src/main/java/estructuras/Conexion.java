@@ -5,8 +5,8 @@ package estructuras;
 
 public class Conexion {
 
-		int destino;
-		double peso;
+		public int destino;
+		public double peso;
 		
 		public Conexion(int destino, double peso) {
 			this.destino = destino;

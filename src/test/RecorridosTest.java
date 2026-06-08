@@ -1,4 +1,4 @@
-package pruebas;
+package test;
 
 import estructuras.*;
 
@@ -91,5 +91,46 @@ public class RecorridosTest {
         for(int i = 0; i < resultadoBFS.size(); i++) {
             assertNotEquals(4, resultadoBFS.getAt(i), "El nodo 4 es inalcanzable");
         }
+    }
+    
+    @Test
+    public void testGrafoVacio() {
+        Grafo grafoVacio = new Grafo(0);
+        Recorridos exploradorVacio = new Recorridos(grafoVacio);
+        
+        LinkedList<Integer> resultado = exploradorVacio.bfs(0);
+        
+        // Un grafo vacío no debe explotar, debe devolver una lista vacía
+        assertNotNull(resultado);
+        assertEquals(0, resultado.size());
+    }
+
+    @Test
+    public void testNodoFueraDeLimites() {
+        // Ejecutar un recorrido en el nodo 99 (que no existe) debe lanzar un IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> {
+            explorador.bfs(99);
+        }, "Debería lanzar excepción si el nodo inicial no existe.");
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            explorador.dfs(-5);
+        }, "Debería lanzar excepción si el nodo inicial es negativo.");
+    }
+
+    @Test
+    public void testInicioDesdeNodoAislado() {
+        Grafo grafoAislado = new Grafo(5);
+        // Nodos 0, 1 y 2 conectados. Nodo 4 totalmente aislado.
+        grafoAislado.agregarArista(0, 1, 5.0);
+        grafoAislado.agregarArista(1, 2, 5.0);
+        
+        Recorridos exploradorAislado = new Recorridos(grafoAislado);
+        
+        // Iniciamos la búsqueda EXACTAMENTE desde el nodo aislado
+        LinkedList<Integer> resultadoBFS = exploradorAislado.bfs(4);
+        
+        // Solo debe encontrarse a sí mismo
+        assertEquals(1, resultadoBFS.size());
+        assertEquals(4, resultadoBFS.getAt(0));
     }
 }
