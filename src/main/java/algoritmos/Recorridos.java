@@ -13,7 +13,7 @@ public class Recorridos {
 	public LinkedList<Integer> bfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
 		
-		// --- 🛡️ BLINDAJE CONTRA CASOS EXTREMOS ---
+		
 		if (cantidadVertices == 0) {
 			return new LinkedList<>(); // Retorna lista vacía si el grafo no tiene nodos
 		}
@@ -48,7 +48,7 @@ public class Recorridos {
 	public LinkedList<Integer> dfs(int nodoInicial) {
 		int cantidadVertices = grafo.getCantidadVertices();
 		
-		// --- 🛡️ BLINDAJE CONTRA CASOS EXTREMOS ---
+		
 		if (cantidadVertices == 0) {
 			return new LinkedList<>(); 
 		}
