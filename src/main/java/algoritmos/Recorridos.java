@@ -7,6 +7,11 @@ public class Recorridos {
 	private Grafo grafo;
 	
 	public Recorridos(Grafo grafo) {
+		
+		// FUCK NULOS
+		if (grafo == null) {
+			throw new IllegalArgumentException("Error Crítico: El grafo proporcionado a Recorridos no puede ser nulo.");
+		}
 		this.grafo = grafo;
 	}
 	
