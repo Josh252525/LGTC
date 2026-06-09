@@ -10,7 +10,8 @@ public class ValidadorPaquetesTest {
 
     @Test
     public void testEncontrarDepositoExitoso() {
-        // Configuramos una ciudad de prueba con el nodo 1 como depósito
+        // Configuramos una ciudad de prueba con el nodo 1 como depósito.
+        // Agregamos ,0,0 al final para cumplir con la firma (id, tipo, x, y)
         Vertice[] vertices = {
             new Vertice(0, "NORMAL", 0, 0),
             new Vertice(1, "DEPOT", 0, 0), // El depósito está en el ID 1
@@ -27,7 +28,7 @@ public class ValidadorPaquetesTest {
     @Test
     public void testCiudadSinDeposito() {
         // Ciudad pura de nodos normales, se les olvidó poner el DEPOT
-        Vertice[] vertices = { new Vertice(0, "NORMAL"), new Vertice(1, "NORMAL") };
+        Vertice[] vertices = { new Vertice(0, "NORMAL", 0, 0), new Vertice(1, "NORMAL", 0, 0) };
         Ciudad ciudad = new Ciudad(vertices, new Arista[0]);
         ConfigLogisTEC config = new ConfigLogisTEC(ciudad, new Paquete[0], new Camion[0]);
 
@@ -40,7 +41,7 @@ public class ValidadorPaquetesTest {
 
     @Test
     public void testConstruccionGrafo() {
-        Vertice[] vertices = { new Vertice(0, "DEPOT"), new Vertice(1, "NORMAL") };
+        Vertice[] vertices = { new Vertice(0, "DEPOT", 0, 0), new Vertice(1, "NORMAL", 0, 0) };
         Arista[] aristas = { new Arista(0, 1, 15.5) };
         Ciudad ciudad = new Ciudad(vertices, aristas);
         ConfigLogisTEC config = new ConfigLogisTEC(ciudad, new Paquete[0], new Camion[0]);
@@ -57,9 +58,9 @@ public class ValidadorPaquetesTest {
     public void testValidacionPaquetesConInalcanzables() {
         // --- 1. Preparar la topología ---
         Vertice[] vertices = {
-            new Vertice(0, "DEPOT"),
-            new Vertice(1, "NORMAL"),
-            new Vertice(2, "NORMAL") // El nodo 2 estará aislado (sin calles)
+            new Vertice(0, "DEPOT", 0, 0),
+            new Vertice(1, "NORMAL", 0, 0),
+            new Vertice(2, "NORMAL", 0, 0) // El nodo 2 estará aislado (sin calles)
         };
         
         // Solo hay camino del 0 al 1. El 2 está desconectado.
