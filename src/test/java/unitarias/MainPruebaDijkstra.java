@@ -1,7 +1,8 @@
-package pruebas;
+package unitarias;
 
 import datos.*;
 import estructuras.*;
+import algoritmos.Dijkstra;
 
 public class MainPruebaDijkstra {
 	

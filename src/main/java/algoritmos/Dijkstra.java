@@ -1,4 +1,7 @@
-package estructuras;
+package algoritmos;
+
+import estructuras.*;
+
 
 public class Dijkstra {
 	
@@ -44,7 +47,7 @@ public class Dijkstra {
 			// 2. Traemos la lista enlazada personalizada de los vecinos del nodo actual
 			LinkedList<Conexion> vecinos = grafo.getVecinos(u);
 			
-			// 3. Iteramos de forma clásica usando los métodos de tu LinkedList
+			// Se itera usando los métodos de la LinkedList
 			int cantidadVecinos = vecinos.size();
 			for (int i = 0; i < cantidadVecinos; i++) {
 				

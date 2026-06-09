@@ -1,4 +1,4 @@
-package pruebas;
+package unitarias;
 
 import datos.*; // Se importan los modelos
 import estructuras.*;

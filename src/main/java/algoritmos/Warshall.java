@@ -1,4 +1,6 @@
-package estructuras;
+package algoritmos;
+
+import estructuras.*;
 
 public class Warshall {
 	
