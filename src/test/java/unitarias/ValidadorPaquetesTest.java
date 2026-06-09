@@ -12,9 +12,9 @@ public class ValidadorPaquetesTest {
     public void testEncontrarDepositoExitoso() {
         // Configuramos una ciudad de prueba con el nodo 1 como depósito
         Vertice[] vertices = {
-            new Vertice(0, "NORMAL"),
-            new Vertice(1, "DEPOT"), // El depósito está en el ID 1
-            new Vertice(2, "NORMAL")
+            new Vertice(0, "NORMAL", 0, 0),
+            new Vertice(1, "DEPOT", 0, 0), // El depósito está en el ID 1
+            new Vertice(2, "NORMAL", 0, 0)
         };
         Ciudad ciudad = new Ciudad(vertices, new Arista[0]);
         ConfigLogisTEC config = new ConfigLogisTEC(ciudad, new Paquete[0], new Camion[0]);
