@@ -33,14 +33,14 @@ public class EnrutadorMST {
             throw new IllegalArgumentException("Error: El nodo de depósito " + deposito + " está fuera de los límites del mapa.");
         }
 
-        // --- 🛡️ CASO EXTREMO 1: El camión no tiene entregas ---
+        // --- CASO EXTREMO 1: El camión no tiene entregas ---
         if (destinosCamion.size() == 0) {
             LinkedList<Integer> rutaVacia = new LinkedList<>();
             rutaVacia.insert(deposito);
             return rutaVacia; // El camión se queda en la base
         }
 
-        // --- 🛡️ FILTRADO DE DUPLICADOS Y LIMPIEZA DE DATOS ---
+        // --- FILTRADO DE DUPLICADOS Y LIMPIEZA DE DATOS ---
         LinkedList<Integer> ciudadesUnicas = new LinkedList<>();
         for (int i = 0; i < destinosCamion.size(); i++) {
             int ciudad = destinosCamion.getAt(i);
@@ -56,7 +56,7 @@ public class EnrutadorMST {
             }
         }
 
-        // --- 🛡️ CASO EXTREMO 2: Todas las entregas eran duplicados del depósito o base ---
+        // --- CASO EXTREMO 2: Todas las entregas eran duplicados del depósito o base ---
         if (ciudadesUnicas.size() == 0) {
             LinkedList<Integer> rutaRetornoDirecto = new LinkedList<>();
             rutaRetornoDirecto.insert(deposito);
@@ -83,7 +83,7 @@ public class EnrutadorMST {
                 
                 double distanciaFloyd = matrizFloyd[uGlobal][vGlobal];
                 
-                // 🛡️ CASO EXTREMO 3: Tratar de rutear hacia un nodo inalcanzable en el mapa
+                // CASO EXTREMO 3: Tratar de rutear hacia un nodo inalcanzable en el mapa
                 if (distanciaFloyd == Double.POSITIVE_INFINITY) {
                     throw new IllegalStateException("Error Crítico: No existe ninguna ruta alcanzable entre la ciudad " 
                             + uGlobal + " y la ciudad " + vGlobal + ". Revisar filtro de Warshall.");
@@ -120,7 +120,7 @@ public class EnrutadorMST {
         return rutaFinalCompleta;
     }
 
-    // Algoritmo de DFS en Preorden puro
+    // Algoritmo de DFS en Preorden puro. Esto para no tocar mucho Recorridos
     private void ejecutarDFSPreorden(int actual, Grafo arbolMST, boolean[] visitados, LinkedList<Integer> resultado) {
         visitados[actual] = true;
         resultado.insert(actual); // Operación de Preorden: Registrar inmediatamente al entrar
