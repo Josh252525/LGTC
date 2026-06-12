@@ -80,7 +80,7 @@ public class Controller implements Initializable {
                 mapaPane.getChildren().clear();
                 
                 // 4. [Aquí llamará a Dev B] para que pinte los círculos y calles estáticas
-                // DibujanteMapa.dibujarCiudad(mapaPane, configuracionGlobal.ciudad(), factorEscala);
+                DibujanteMapa.dibujarCiudad(mapaPane, configuracionGlobal.ciudad(), factorEscala);
                 
                 System.out.println("Backend: Grafo y depósito inicializados correctamente.");
             }

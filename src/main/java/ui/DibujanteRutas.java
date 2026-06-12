@@ -3,6 +3,7 @@ package ui;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Polyline;
 import javafx.scene.paint.Color;
+import javafx.scene.effect.DropShadow;
 import estructuras.LinkedList;
 import datos.Vertice;
 import datos.Ciudad;
@@ -51,6 +52,13 @@ public class DibujanteRutas {
             // 4. Configuración estética del camino del camión
             Color colorAsignado = COLORES_FLOTA[i % COLORES_FLOTA.length];
             trazoCamion.setStroke(colorAsignado);
+            
+         // EFECTO NEÓN
+            DropShadow resplandor = new DropShadow();
+            resplandor.setColor(colorAsignado);
+            resplandor.setRadius(15);   // Qué tan difuminada es la luz
+            resplandor.setSpread(0.4);  // Qué tan fuerte es la luz
+            trazoCamion.setEffect(resplandor);
             trazoCamion.setStrokeWidth(5.0);               // Línea gruesa para que resalte
             trazoCamion.setStrokeLineJoin(javafx.scene.shape.StrokeLineJoin.ROUND); // Curvas suaves en las esquinas
 
