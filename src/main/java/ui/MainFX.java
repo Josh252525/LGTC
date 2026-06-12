@@ -1,0 +1,25 @@
+package ui;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class MainFX extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Busca el diseño en la carpeta resources
+        Parent root = FXMLLoader.load(getClass().getResource("/ventana_principal.fxml"));
+        
+        primaryStage.setTitle("LogísTEC - Enrutamiento y Logística");
+        primaryStage.setScene(new Scene(root, 760, 600)); // Las medidas de tu FXML
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args); // ¡Da la orden de arrancar la interfaz visual!
+    }
+}
