@@ -26,7 +26,7 @@ public class EnrutadorNearestNeighborTest {
         EnrutadorNearestNeighbor nn = new EnrutadorNearestNeighbor();
 
         LinkedList<Integer> ruta =
-                nn.GenerarRuta(0, destinos, floyd);
+                nn.generarRuta(0, destinos, floyd);
 
         assertEquals(5, ruta.size());
 
@@ -50,7 +50,7 @@ public class EnrutadorNearestNeighborTest {
                 new EnrutadorNearestNeighbor();
 
         LinkedList<Integer> ruta =
-                nn.GenerarRuta(0, destinos, floyd);
+                nn.generarRuta(0, destinos, floyd);
 
         assertEquals(1, ruta.size());
         assertEquals(0, ruta.getAt(0));
@@ -75,7 +75,7 @@ public class EnrutadorNearestNeighborTest {
                 new EnrutadorNearestNeighbor();
 
         LinkedList<Integer> ruta =
-                nn.GenerarRuta(0, destinos, floyd);
+                nn.generarRuta(0, destinos, floyd);
 
         assertEquals(3, ruta.size());
 
@@ -104,7 +104,7 @@ public class EnrutadorNearestNeighborTest {
                 new EnrutadorNearestNeighbor();
 
         LinkedList<Integer> ruta =
-                nn.GenerarRuta(0, destinos, floyd);
+                nn.generarRuta(0, destinos, floyd);
 
         assertNotNull(ruta);
 
@@ -128,7 +128,7 @@ public class EnrutadorNearestNeighborTest {
 
         assertThrows(
             IllegalArgumentException.class,
-            () -> nn.GenerarRuta(0, destinos, null)
+            () -> nn.generarRuta(0, destinos, null)
         );
     }
 
@@ -145,7 +145,7 @@ public class EnrutadorNearestNeighborTest {
 
         assertThrows(
             IllegalArgumentException.class,
-            () -> nn.GenerarRuta(0, destinos, floyd)
+            () -> nn.generarRuta(0, destinos, floyd)
         );
     }
 }
