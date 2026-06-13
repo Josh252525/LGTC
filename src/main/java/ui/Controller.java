@@ -24,6 +24,7 @@ import datos.ExportadorCSV;               // Para guardar el reporte en Excel
 import estructuras.LinkedList;            // Nuestra lista enlazada personalizada
 import estructuras.Grafo;                 // Estructura oficial de la red vial
 import algoritmos.FloydWarshall;           // Generador de la matriz de distancias optimizadas
+import algoritmos.Dijkstra;
 import planner.LogisticaPlanner;          // Orquestador del Best-Fit
 import planner.CamionPlanificado;         // Envoltura mutable del estado del camión
 import planner.ResultadoLogistica;        // Reporte de salida de la distribución
@@ -132,6 +133,10 @@ public class Controller implements Initializable {
             LinkedList<Integer> rutaMST = enrutadorMST.generarRuta(nodoDeposito, destinos, matrizFloyd);
             rutasFlotaMST.insert(rutaMST);
             
+            // USAMOS DIJKSTRA PARA EXPANDIRLA A CALLES REALES
+            LinkedList<Integer> microRutaMST = expandirRutaConDijkstra(rutaMST);
+            rutasFlotaMST.insert(microRutaMST);
+            
             // Heurística B: El algoritmo codicioso de tu compañero (Nearest Neighbor)
             LinkedList<Integer> rutaNN = enrutadorNN.generarRuta(nodoDeposito, destinos, matrizFloyd);
             rutasFlotaNN.insert(rutaNN);
@@ -196,4 +201,40 @@ public class Controller implements Initializable {
         }
         return destinos;
     }
+    
+    /**
+     * Toma una "Macro-Ruta" (solo paradas) y usa Dijkstra para rellenar las calles
+     * intermedias y formar la "Micro-Ruta" real que recorrerá el camión.
+     */
+    private LinkedList<Integer> expandirRutaConDijkstra(LinkedList<Integer> macroRuta) {
+        if (macroRuta == null || macroRuta.size() < 2) return macroRuta;
+        
+        LinkedList<Integer> rutaFisicaCompleta = new LinkedList<>();
+        Dijkstra dijkstra = new Dijkstra(ciudadGrafo); // Instanciamos la clase de tu compañero
+        
+        // Empezamos insertando el punto de salida
+        rutaFisicaCompleta.insert(macroRuta.getAt(0));
+
+        // Recorremos las paradas de 2 en 2 (Ej: de 0 a 4, luego de 4 a 0)
+        for (int i = 0; i < macroRuta.size() - 1; i++) {
+            int origen = macroRuta.getAt(i);
+            int destino = macroRuta.getAt(i + 1);
+            
+            // ¡AQUÍ ES DONDE SE UTILIZA DIJKSTRA!
+            // Le pedimos a Dijkstra que nos calcule el camino calle por calle
+            LinkedList<Integer> caminoIntermedio = dijkstra.calcular(origen, destino);
+            
+            // Insertamos las calles intermedias en nuestra ruta final (ignorando el origen 
+            // para no duplicarlo, ya que el destino del paso anterior es el origen del actual)
+            for (int j = 1; j < caminoIntermedio.size(); j++) {
+                rutaFisicaCompleta.insert(caminoIntermedio.getAt(j));
+            }
+        }
+        
+        return rutaFisicaCompleta;
+    }
+    
+    
+    
+    
 }
