@@ -3,23 +3,33 @@ package planner;
 import estructuras.*;
 import datos.*;
 
+/**
+ * Motor central de la planificación logística para el empacado de camiones.
+ * Implementa la heurística de asignación Best-Fit Decreasing (Mejor Ajuste Descendente)
+ * para resolver el problema de Bin Packing y maximizar el uso del espacio en la flota.
+ */
 public class LogisticaPlanner {
 
-    // Recibe los alcanzables, los inalcanzables (de Warshall) y el JSON de camiones puros
+    /**
+     * Distribuye los paquetes disponibles entre los camiones de la empresa intentando
+     * dejar el menor espacio sobrante posible en cada vehículo.
+     *
+     * @param paquetesAlcanzables Arreglo de paquetes cuyas ciudades de destino son válidas.
+     * @param inalcanzables       Lista de paquetes previamente descartados por no tener ruta.
+     * @param camionesJson        Arreglo con la información estática de los camiones disponibles.
+     * @return Un objeto ResultadoLogistica que segrega la carga asignada, rechazada e inalcanzable.
+     */
     public ResultadoLogistica asignarCarga(Paquete[] paquetesAlcanzables, LinkedList<Paquete> inalcanzables, Camion[] camionesJson) {
         
-        // 1. Mapeamos los records inmutables a nuestras clases mutables de simulación
         CamionPlanificado[] flota = new CamionPlanificado[camionesJson.length];
         for (int i = 0; i < camionesJson.length; i++) {
             flota[i] = new CamionPlanificado(camionesJson[i]);
         }
         
-        // 2. Ordenamos paquetes (Prioridad ascendente, Peso descendente)
         ordenarPaquetes(paquetesAlcanzables);
         
         LinkedList<Paquete> noAsignados = new LinkedList<>();
         
-        // 3. Lógica pura de Best-Fit
         for (Paquete p : paquetesAlcanzables) {
             int mejorCamionIndex = -1;
             double mejorEspacioSobrante = Double.MAX_VALUE;
@@ -27,11 +37,9 @@ public class LogisticaPlanner {
             for (int i = 0; i < flota.length; i++) {
                 double espacioActual = flota[i].getCapacidadRestante();
                 
-                // ¿Cabe el paquete?
                 if (espacioActual >= p.peso()) {
                     double espacioSobrante = espacioActual - p.peso();
                     
-                    // Condición de Best-Fit: encontrar el ajuste más apretado
                     if (espacioSobrante < mejorEspacioSobrante) {
                         mejorEspacioSobrante = espacioSobrante;
                         mejorCamionIndex = i;
@@ -39,26 +47,22 @@ public class LogisticaPlanner {
                 }
             }
 
-            // 4. Asignamos usando el método seguro de la envoltura
             if (mejorCamionIndex != -1) {
                 flota[mejorCamionIndex].intentarCargar(p);
             } else {
-                noAsignados.insert(p); // Ningún camión tuvo espacio suficiente
+                noAsignados.insert(p); 
             }
         }
 
-        // Devolvemos el reporte completo
         return new ResultadoLogistica(inalcanzables, noAsignados, flota);
     }
     
-    // Insertion Sort robusto adaptado a las reglas del negocio de LogísTEC
+    // Insertion Sort robusto adaptado a las reglas del negocio (Prioridad y Peso)
     private void ordenarPaquetes(Paquete[] paquetes) {
         for (int i = 1; i < paquetes.length; i++) {
             Paquete actual = paquetes[i];
             int j = i - 1;
             
-            // Regla 1: Prioridad ascendente (1 es más prioritario que 2, por ende 2 es 'mayor' en número).
-            // Regla 2: A igual prioridad, peso descendente (el más pesado va primero).
             while (j >= 0 && (
                    paquetes[j].prioridad() > actual.prioridad() || 
                    (paquetes[j].prioridad() == actual.prioridad() && paquetes[j].peso() < actual.peso())

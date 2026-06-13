@@ -2,17 +2,31 @@ package algoritmos;
 
 import estructuras.*;
 
+/**
+ * Implementa el algoritmo de Dijkstra para encontrar el camino más corto en un grafo ponderado.
+ * Esta clase se utiliza para generar las rutas físicas calle por calle que deben
+ * recorrer los camiones para llegar de un punto a otro.
+ */
 public class Dijkstra {
 	
 	private Grafo grafo;
 	
+	/**
+	 * Constructor de la clase Dijkstra.
+	 * * @param grafo El grafo de la ciudad sobre el cual se calcularán las distancias.
+	 */
 	public Dijkstra(Grafo grafo) {
 		this.grafo = grafo;
 	}
 	
 	/**
-	 * Calcula el camino más corto entre un origen y un destino específico.
-	 * Utiliza un arreglo de 'padres' para reconstruir la ruta calle por calle.
+	 * Calcula el camino más corto entre un vértice de origen y un vértice de destino.
+	 * Utiliza una Cola de Prioridad para optimizar la extracción del vértice más cercano
+	 * y un arreglo de predecesores para reconstruir la ruta exacta.
+	 * * @param origen  El ID numérico del vértice de salida.
+	 * @param destino El ID numérico del vértice de llegada.
+	 * @return Una LinkedList de enteros que representa la secuencia exacta de vértices 
+	 * por los que debe pasar el camión. Si el destino es inalcanzable, devuelve una lista vacía.
 	 */
 	public LinkedList<Integer> calcular(int origen, int destino) {
 		
@@ -20,12 +34,11 @@ public class Dijkstra {
 		
 		double[] distancia = new double[vertices];
 		boolean[] visitado = new boolean[vertices];
-		int[] padre = new int[vertices]; // ¡CLAVE! Aquí guardamos las "migas de pan"
+		int[] padre = new int[vertices]; 
 		
-		// Llenamos las distancias con infinito y los padres con -1
 		for(int i = 0; i < vertices; i++) {
 			distancia[i] = Double.MAX_VALUE;
-			padre[i] = -1; // -1 significa que no tiene predecesor aún
+			padre[i] = -1; 
 		}
 		
 		distancia[origen] = 0;
@@ -37,7 +50,6 @@ public class Dijkstra {
 			NodoHeap actual = cola.extraerMin();
 			int u = actual.vertice;
 			
-			// Optimización: Si llegamos al destino que buscábamos, podemos detener la búsqueda
 			if (u == destino) {
 			    break;
 			}
@@ -55,27 +67,22 @@ public class Dijkstra {
 				int v = conexion.destino;
 				double pesoArista = conexion.peso;
 				
-				// Relajación de aristas
 				if (!visitado[v] && distancia[u] + pesoArista < distancia[v]) {
 					distancia[v] = distancia[u] + pesoArista;
-					padre[v] = u; // ¡Guardamos que llegamos a 'v' pasando por 'u'!
+					padre[v] = u; 
 					cola.insert(v, distancia[v]);
 				}
 			}
 		}
 		
-		// --- FASE 2: RECONSTRUCCIÓN DEL CAMINO ---
 		LinkedList<Integer> caminoFinal = new LinkedList<>();
 		int actual = destino;
 		
-		// Si el destino no tiene padre y no es el origen, significa que es inalcanzable
 		if (padre[actual] == -1 && actual != origen) {
-		    return caminoFinal; // Retornamos lista vacía
+		    return caminoFinal; 
 		}
 		
-		// Retrocedemos desde el destino hasta el origen usando las migas de pan
 		while (actual != -1) {
-		    // Usamos el método de tu compañero para insertar al inicio y que la ruta quede al derecho
 		    caminoFinal.insertAtStart(actual); 
 		    actual = padre[actual];
 		}

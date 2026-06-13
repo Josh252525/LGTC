@@ -1,36 +1,53 @@
 package estructuras;
 
-/*
-Documentación:
-Cola Genérica basada en LinkedList.
-Utiliza el principio de Composición: delegamos el manejo de memoria a la lista
-para mantener esta clase limpia y enfocada solo en la lógica FIFO.
-*/
+/**
+ * Implementación de un TDA Cola (Queue) genérica basada en la regla FIFO (First-In, First-Out).
+ * Utiliza el patrón de diseño de Composición, delegando la gestión de memoria
+ * a la clase interna LinkedList para garantizar encapsulamiento estricto.
+ *
+ * @param <T> El tipo de datos que manejará la Cola.
+ */
 public class Cola<T> {
     
     private LinkedList<T> lista;
 
+    /**
+     * Inicializa una nueva Cola vacía.
+     */
     public Cola() {
         this.lista = new LinkedList<>();
     }
 
+    /**
+     * Verifica si la cola carece de elementos.
+     *
+     * @return true si la cola está vacía, false en caso contrario.
+     */
     public boolean isEmpty() {
         return lista.size() == 0;
     }
 
-    // Encolar: Entra al final de la fila
+    /**
+     * Inserta (encola) un elemento al final de la fila.
+     *
+     * @param data El elemento a agregar.
+     */
     public void insert(T data) {
         lista.insert(data); 
     }
 
-    // Desencolar: Sale el primero de la fila
+    /**
+     * Extrae (desencola) y retorna el primer elemento de la fila.
+     *
+     * @return El elemento que llevaba más tiempo en la cola, o null si la cola está vacía.
+     */
     public T remove() {
         if (isEmpty()) {
-            return null; // Retorna null de forma segura si está vacía
+            return null; 
         }
         
-        T valor = lista.getAt(0); // Se toma al que está de primero
-        lista.deleteAt(0);        // Lo sacamos de la fila
+        T valor = lista.getAt(0); 
+        lista.deleteAt(0);        
         
         return valor;
     }

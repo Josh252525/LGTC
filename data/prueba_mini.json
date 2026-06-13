@@ -1,31 +1,119 @@
 {
   "ciudad": {
     "vertices": [
-      { "id": 0, "tipo": "DEPOT", "x": 20, "y": 20 },
-      { "id": 1, "tipo": "NORMAL", "x": 10, "y": 10 },
-      { "id": 2, "tipo": "NORMAL", "x": 30, "y": 10 },
-      { "id": 3, "tipo": "NORMAL", "x": 10, "y": 30 },
-      { "id": 4, "tipo": "NORMAL", "x": 30, "y": 30 },
-      { "id": 5, "tipo": "NORMAL", "x": 50, "y": 50 }
+      { "id": 0, "tipo": "DEPOT", "x": 45, "y": 35 },
+      
+      { "id": 1, "tipo": "NORMAL", "x": 45, "y": 15 },
+      { "id": 2, "tipo": "NORMAL", "x": 30, "y": 15 },
+      { "id": 3, "tipo": "NORMAL", "x": 60, "y": 15 },
+      { "id": 4, "tipo": "NORMAL", "x": 20, "y": 5 },
+      { "id": 5, "tipo": "NORMAL", "x": 70, "y": 5 },
+      
+      { "id": 6, "tipo": "NORMAL", "x": 70, "y": 35 },
+      { "id": 7, "tipo": "NORMAL", "x": 80, "y": 25 },
+      { "id": 8, "tipo": "NORMAL", "x": 80, "y": 45 },
+      { "id": 9, "tipo": "NORMAL", "x": 90, "y": 35 },
+      
+      { "id": 10, "tipo": "NORMAL", "x": 45, "y": 55 },
+      { "id": 11, "tipo": "NORMAL", "x": 30, "y": 55 },
+      { "id": 12, "tipo": "NORMAL", "x": 60, "y": 55 },
+      { "id": 13, "tipo": "NORMAL", "x": 20, "y": 65 },
+      { "id": 14, "tipo": "NORMAL", "x": 70, "y": 65 },
+      { "id": 15, "tipo": "NORMAL", "x": 45, "y": 75 },
+      
+      { "id": 16, "tipo": "NORMAL", "x": 20, "y": 35 },
+      { "id": 17, "tipo": "NORMAL", "x": 10, "y": 25 },
+      { "id": 18, "tipo": "NORMAL", "x": 10, "y": 45 },
+      { "id": 19, "tipo": "NORMAL", "x": 5, "y": 35 },
+      
+      { "id": 20, "tipo": "NORMAL", "x": 30, "y": 25 },
+      { "id": 21, "tipo": "NORMAL", "x": 60, "y": 25 },
+      { "id": 22, "tipo": "NORMAL", "x": 30, "y": 45 },
+      { "id": 23, "tipo": "NORMAL", "x": 60, "y": 45 },
+      
+      { "id": 24, "tipo": "NORMAL", "x": 15, "y": 15 },
+      { "id": 25, "tipo": "NORMAL", "x": 75, "y": 15 },
+      { "id": 26, "tipo": "NORMAL", "x": 15, "y": 55 },
+      { "id": 27, "tipo": "NORMAL", "x": 75, "y": 55 },
+      
+      { "id": 28, "tipo": "NORMAL", "x": 85, "y": 75 },
+      { "id": 29, "tipo": "NORMAL", "x": 95, "y": 75 }
     ],
     "aristas": [
-      { "u": 0, "v": 1, "distancia": 10.0 },
-      { "u": 0, "v": 2, "distancia": 10.0 },
-      { "u": 1, "v": 3, "distancia": 10.0 },
-      { "u": 2, "v": 4, "distancia": 10.0 },
-      { "u": 3, "v": 4, "distancia": 10.0 }
-      // Nota: El nodo 5 está totalmente aislado, sin aristas. 
-      // Esto probará si tu validador de paquetes es capaz de detectar que es inalcanzable.
+      { "u": 0, "v": 1, "distancia": 20.0 },
+      { "u": 0, "v": 6, "distancia": 25.0 },
+      { "u": 0, "v": 10, "distancia": 20.0 },
+      { "u": 0, "v": 16, "distancia": 25.0 },
+      { "u": 0, "v": 20, "distancia": 15.0 },
+      { "u": 0, "v": 21, "distancia": 15.0 },
+      { "u": 0, "v": 22, "distancia": 15.0 },
+      { "u": 0, "v": 23, "distancia": 15.0 },
+      { "u": 1, "v": 2, "distancia": 15.0 },
+      { "u": 1, "v": 3, "distancia": 15.0 },
+      { "u": 2, "v": 4, "distancia": 14.0 },
+      { "u": 3, "v": 5, "distancia": 14.0 },
+      { "u": 2, "v": 24, "distancia": 10.0 },
+      { "u": 3, "v": 25, "distancia": 10.0 },
+      { "u": 6, "v": 7, "distancia": 14.0 },
+      { "u": 6, "v": 8, "distancia": 14.0 },
+      { "u": 7, "v": 9, "distancia": 14.0 },
+      { "u": 8, "v": 9, "distancia": 14.0 },
+      { "u": 5, "v": 7, "distancia": 20.0 },
+      { "u": 10, "v": 11, "distancia": 15.0 },
+      { "u": 10, "v": 12, "distancia": 15.0 },
+      { "u": 11, "v": 13, "distancia": 14.0 },
+      { "u": 12, "v": 14, "distancia": 14.0 },
+      { "u": 10, "v": 15, "distancia": 20.0 },
+      { "u": 13, "v": 15, "distancia": 25.0 },
+      { "u": 14, "v": 15, "distancia": 25.0 },
+      { "u": 11, "v": 26, "distancia": 10.0 },
+      { "u": 12, "v": 27, "distancia": 10.0 },
+      { "u": 16, "v": 17, "distancia": 14.0 },
+      { "u": 16, "v": 18, "distancia": 14.0 },
+      { "u": 17, "v": 19, "distancia": 10.0 },
+      { "u": 18, "v": 19, "distancia": 10.0 },
+      { "u": 4, "v": 17, "distancia": 20.0 },
+      { "u": 13, "v": 18, "distancia": 20.0 },
+      { "u": 20, "v": 2, "distancia": 10.0 },
+      { "u": 20, "v": 16, "distancia": 10.0 },
+      { "u": 21, "v": 3, "distancia": 10.0 },
+      { "u": 21, "v": 6, "distancia": 10.0 },
+      { "u": 22, "v": 16, "distancia": 10.0 },
+      { "u": 22, "v": 11, "distancia": 10.0 },
+      { "u": 23, "v": 6, "distancia": 10.0 },
+      { "u": 23, "v": 12, "distancia": 10.0 },
+      { "u": 28, "v": 29, "distancia": 10.0 },
+      { "u": 4, "v": 24, "distancia": 10.0 },
+      { "u": 5, "v": 25, "distancia": 10.0 },
+      { "u": 13, "v": 26, "distancia": 10.0 },
+      { "u": 14, "v": 27, "distancia": 10.0 },
+      { "u": 1, "v": 20, "distancia": 15.0 },
+      { "u": 6, "v": 21, "distancia": 15.0 },
+      { "u": 10, "v": 22, "distancia": 15.0 },
+      { "u": 8, "v": 27, "distancia": 20.0 }
     ]
   },
   "paquetes": [
-    { "id": 101, "destino": 1, "peso": 20.0, "prioridad": 1 },
-    { "id": 102, "destino": 4, "peso": 45.0, "prioridad": 1 },
-    { "id": 103, "destino": 5, "peso": 10.0, "prioridad": 2 },
-    { "id": 104, "destino": 3, "peso": 30.0, "prioridad": 3 }
+    { "id": 1001, "destino": 9, "peso": 45.0, "prioridad": 1 },
+    { "id": 1002, "destino": 4, "peso": 20.0, "prioridad": 2 },
+    { "id": 1003, "destino": 15, "peso": 35.0, "prioridad": 1 },
+    { "id": 1004, "destino": 19, "peso": 50.0, "prioridad": 3 },
+    { "id": 1005, "destino": 29, "peso": 10.0, "prioridad": 1 },
+    { "id": 1006, "destino": 5, "peso": 25.0, "prioridad": 2 },
+    { "id": 1007, "destino": 13, "peso": 40.0, "prioridad": 1 },
+    { "id": 1008, "destino": 8, "peso": 30.0, "prioridad": 3 },
+    { "id": 1009, "destino": 25, "peso": 15.0, "prioridad": 2 },
+    { "id": 1010, "destino": 26, "peso": 55.0, "prioridad": 1 },
+    { "id": 1011, "destino": 1, "peso": 20.0, "prioridad": 2 },
+    { "id": 1012, "destino": 17, "peso": 25.0, "prioridad": 3 },
+    { "id": 1013, "destino": 2, "peso": 10.0, "prioridad": 2 },
+    { "id": 1014, "destino": 7, "peso": 15.0, "prioridad": 1 },
+    { "id": 1015, "destino": 21, "peso": 20.0, "prioridad": 3 },
+    { "id": 1016, "destino": 28, "peso": 5.0, "prioridad": 1 }
   ],
   "camiones": [
-    { "id": 1, "capacidad": 50.0 },
-    { "id": 2, "capacidad": 40.0 }
+    { "id": "TRK-Pesado", "capacidad": 120.0 },
+    { "id": "TRK-Medio", "capacidad": 100.0 },
+    { "id": "TRK-Ligero", "capacidad": 80.0 }
   ]
 }

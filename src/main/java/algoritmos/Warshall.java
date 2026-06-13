@@ -2,10 +2,23 @@ package algoritmos;
 
 import estructuras.*;
 
+/**
+ * Implementa el algoritmo booleano de Warshall para determinar la clausura transitiva
+ * de un grafo dirigido o no dirigido.
+ * <p>
+ * Permite responder rápidamente a la pregunta lógica: "¿Existe algún camino posible
+ * (directo o con escalas) para llegar del nodo A al nodo B?"
+ * </p>
+ */
 public class Warshall {
 	
 	public boolean[][] alcanzable;
 	
+	/**
+	 * Constructor de Warshall. Al instanciarse, procesa toda la matriz de adyacencia
+	 * aplicando la evaluación iterativa de nodos intermediarios en complejidad O(V^3).
+	 * * @param grafo El grafo de la ciudad cuyas rutas de alcance serán evaluadas.
+	 */
 	public Warshall(Grafo grafo) {
 		
 		int n = grafo.getCantidadVertices();
@@ -15,12 +28,10 @@ public class Warshall {
 			alcanzable[a][a] = true;
 		}
 			
-		//Adaptado a la LinkedList Genérica
 		for(int p = 0; p < n; p++) {
 		    LinkedList<Conexion> vecinos = grafo.getVecinos(p);
 		    int cantidadVecinos = vecinos.size();
 		    
-		    // Usamos el for clásico y el método getAt() que construimos
 			for(int i = 0; i < cantidadVecinos; i++) {
 			    Conexion conexion = vecinos.getAt(i);
 				alcanzable[p][conexion.destino] = true;
@@ -36,6 +47,12 @@ public class Warshall {
 		}	
 	}
 	
+	/**
+	 * Verifica si un vértice de destino es alcanzable desde un vértice de origen.
+	 * * @param origen  El ID numérico del vértice de partida.
+	 * @param destino El ID numérico del vértice al que se desea llegar.
+	 * @return true si existe al menos una ruta posible; false en caso contrario.
+	 */
 	public boolean esAlcanzable(int origen, int destino) {
 		return alcanzable[origen][destino];
 	}

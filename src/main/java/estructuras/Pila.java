@@ -1,41 +1,63 @@
 package estructuras;
 
-/*
-Documentación:
-Pila (Stack) Genérica basada en nuestra propia LinkedList.
-Reemplaza la antigua implementación de arreglos. Funciona bajo el principio LIFO.
-*/
+/**
+ * Implementación de un TDA Pila (Stack) genérica basada en la regla LIFO (Last-In, First-Out).
+ * Diseñada mediante el patrón de Composición utilizando la estructura LinkedList
+ * subyacente para gestionar los elementos en el tope.
+ *
+ * @param <T> El tipo de datos que manejará la Pila.
+ */
 public class Pila<T> {
     
     private LinkedList<T> lista;
 
+    /**
+     * Inicializa una nueva Pila vacía.
+     */
     public Pila() {
         this.lista = new LinkedList<>();
     }
 
+    /**
+     * Verifica si la pila carece de elementos.
+     *
+     * @return true si la pila está vacía, false en caso contrario.
+     */
     public boolean isEmpty() {
         return lista.size() == 0;
     }
 
-    // Apilar: Lo ponemos en el tope de la pila (al inicio)
+    /**
+     * Apila un nuevo elemento colocándolo en el tope (inicio) de la estructura.
+     *
+     * @param data El elemento a insertar.
+     */
     public void push(T data) {
-        lista.insertAtStart(data); // Tu método que mete al principio
+        lista.insertAtStart(data); 
     }
 
-    // Desapilar: Sacamos el que está en el tope
+    /**
+     * Desapila y extrae el elemento que se encuentra en el tope de la estructura.
+     *
+     * @return El elemento más recientemente agregado, o null si la pila está vacía.
+     */
     public T pop() {
         if (isEmpty()) {
             System.out.println("La pila está vacía");
             return null;
         }
         
-        T valor = lista.getAt(0); // Tomamos el del tope
-        lista.deleteAt(0);        // Lo quitamos
+        T valor = lista.getAt(0); 
+        lista.deleteAt(0);        
         
         return valor;
     }
 
-    // Ver el tope sin sacarlo
+    /**
+     * Observa el elemento en el tope de la pila sin extraerlo ni modificar la estructura.
+     *
+     * @return El elemento en el tope, o null si está vacía.
+     */
     public T peek() {
         if (isEmpty()) {
             return null;
