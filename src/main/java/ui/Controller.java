@@ -156,6 +156,8 @@ public class Controller implements Initializable {
         
         // FASE 5: Persistencia del Reporte en Disco
         ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN);
+        
+        GeneradorEstadisticas.mostrarPanel(resultado, rutasFlotaMST, rutasFlotaNN, matrizFloyd);
 
         System.out.println("UI: Simulación logística completada. Mapa actualizado y reporte .csv exportado.");
     }
