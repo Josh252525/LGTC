@@ -123,9 +123,16 @@ public class Controller implements Initializable {
 
         LinkedList<LinkedList<Integer>> rutasFlotaMST = new LinkedList<>();
         LinkedList<LinkedList<Integer>> rutasFlotaNN = new LinkedList<>();
+        
+        LinkedList<Integer> destinosGlobales = new LinkedList<>();
 
         for (CamionPlanificado camionInfo : resultado.flota()) {
             LinkedList<Integer> destinos = extraerDestinosUnicos(camionInfo.getPaquetesCargados());
+            
+            for(int i = 0; i < destinos.size(); i++){
+                destinosGlobales.insert(destinos.getAt(i));
+            }
+            
             
             // --- Heurística A (MST) ---
             LinkedList<Integer> macroRutaMST = enrutadorMST.generarRuta(nodoDeposito, destinos, matrizFloyd);
@@ -144,6 +151,8 @@ public class Controller implements Initializable {
 
         // FASE 4: Renderizado visual
         DibujanteRutas.dibujarRutas(mapaPane, rutasFlotaMST, configuracionGlobal.ciudad(), factorEscala);
+        
+        DibujanteRutas.dibujarDestinos(mapaPane, destinosGlobales, configuracionGlobal.ciudad(), factorEscala);
         
         // FASE 5: Persistencia del Reporte en Disco
         ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN);
