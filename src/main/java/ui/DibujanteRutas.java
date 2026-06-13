@@ -84,15 +84,14 @@ public class DibujanteRutas {
         }
     }
 
-    /**
-     * Borra los caminos de colores de la pantalla de forma segura.
-     */
+     // Borra los caminos de colores y los marcadores de destino de la pantalla.
+     
     public static void limpiarCapaDeRutas(Pane mapaPane) {
-        // Condición lambda: "Elimina del Pane cualquier nodo gráfico cuyo ID sea exactamente 'capaRutaLogistica'"
-        // Esto protege los círculos del Dev B, ya que ellos no tienen este ID.
-        mapaPane.getChildren().removeIf(grafico -> "capaRutaLogistica".equals(grafico.getId()));
+        mapaPane.getChildren().removeIf(grafico -> 
+            "capaRutaLogistica".equals(grafico.getId()) || "capaDestinos".equals(grafico.getId())
+        );
     }
-
+    
     // Método de soporte iterativo para encontrar coordenadas sin usar HashMap
     private static Vertice buscarCiudadPorId(Vertice[] vertices, int id) {
         for (Vertice v : vertices) {
@@ -101,5 +100,26 @@ public class DibujanteRutas {
             }
         }
         return null;
+    }
+    
+    /**
+     * Dibuja anillos dorados sobre las ciudades que son destinos finales de entrega.
+     */
+    public static void dibujarDestinos(Pane mapaPane, LinkedList<Integer> destinosTotales, Ciudad ciudad, double factorEscala) {
+        for (int i = 0; i < destinosTotales.size(); i++) {
+            int idDestino = destinosTotales.getAt(i);
+            Vertice v = buscarCiudadPorId(ciudad.vertices(), idDestino);
+            
+            if (v != null && !v.tipo().equalsIgnoreCase("DEPOT")) {
+                // Creamos un anillo: un círculo más grande que el original, transparente por dentro
+                javafx.scene.shape.Circle marcador = new javafx.scene.shape.Circle(v.x() * factorEscala, v.y() * factorEscala, 10.0);
+                marcador.setFill(Color.TRANSPARENT); 
+                marcador.setStroke(Color.web("#FFD700")); // Color Dorado
+                marcador.setStrokeWidth(3.0); // Borde grueso
+                marcador.setId("capaDestinos"); // ID para poder limpiarlo
+                
+                mapaPane.getChildren().add(marcador);
+            }
+        }
     }
 }

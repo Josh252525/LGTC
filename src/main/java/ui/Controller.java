@@ -119,34 +119,33 @@ public class Controller implements Initializable {
 
         // FASE 3: Enrutamiento comparativo simultáneo (MST vs Nearest Neighbor)
         EnrutadorMST enrutadorMST = new EnrutadorMST();
-        EnrutadorNearestNeighbor enrutadorNN = new EnrutadorNearestNeighbor(); // Clase de tu compañero
+        EnrutadorNearestNeighbor enrutadorNN = new EnrutadorNearestNeighbor();
 
         LinkedList<LinkedList<Integer>> rutasFlotaMST = new LinkedList<>();
         LinkedList<LinkedList<Integer>> rutasFlotaNN = new LinkedList<>();
 
-        // Analizamos cada camión despachado por el planificador de carga
         for (CamionPlanificado camionInfo : resultado.flota()) {
-            // Obtenemos las paradas únicas que el camión está obligado a visitar
             LinkedList<Integer> destinos = extraerDestinosUnicos(camionInfo.getPaquetesCargados());
             
-            // Heurística A: Tu algoritmo estrella (Prim + DFS)
-            LinkedList<Integer> rutaMST = enrutadorMST.generarRuta(nodoDeposito, destinos, matrizFloyd);
-            rutasFlotaMST.insert(rutaMST);
-            
-            // USAMOS DIJKSTRA PARA EXPANDIRLA A CALLES REALES
-            LinkedList<Integer> microRutaMST = expandirRutaConDijkstra(rutaMST);
+            // --- Heurística A (MST) ---
+            LinkedList<Integer> macroRutaMST = enrutadorMST.generarRuta(nodoDeposito, destinos, matrizFloyd);
+            // Dijkstra convierte los saltos imaginarios en calles reales
+            LinkedList<Integer> microRutaMST = expandirRutaConDijkstra(macroRutaMST);
+            // IMPORTANTE: Un solo insert por camión
             rutasFlotaMST.insert(microRutaMST);
             
-            // Heurística B: El algoritmo codicioso de tu compañero (Nearest Neighbor)
-            LinkedList<Integer> rutaNN = enrutadorNN.generarRuta(nodoDeposito, destinos, matrizFloyd);
-            rutasFlotaNN.insert(rutaNN);
+            // --- Heurística B (Nearest Neighbor) ---
+            LinkedList<Integer> macroRutaNN = enrutadorNN.generarRuta(nodoDeposito, destinos, matrizFloyd);
+            // También le aplicamos Dijkstra al Vecino Más Cercano
+            LinkedList<Integer> microRutaNN = expandirRutaConDijkstra(macroRutaNN);
+            // IMPORTANTE: Un solo insert por camión
+            rutasFlotaNN.insert(microRutaNN);
         }
 
-        // FASE 4: Renderizado de líneas láser neón (Tu rol como Dev C)
-        // Decidimos sobreponer visualmente el camino del MST por ser la solución óptima
+        // FASE 4: Renderizado visual
         DibujanteRutas.dibujarRutas(mapaPane, rutasFlotaMST, configuracionGlobal.ciudad(), factorEscala);
         
-        // FASE 5: Persistencia del Reporte de Operaciones en Disco
+        // FASE 5: Persistencia del Reporte en Disco
         ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN);
 
         System.out.println("UI: Simulación logística completada. Mapa actualizado y reporte .csv exportado.");
