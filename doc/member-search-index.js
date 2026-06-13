@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"planner","c":"LogisticaPlanner","l":"asignarCarga(Paquete[], LinkedList<Paquete>, Camion[])","u":"asignarCarga(datos.Paquete[],estructuras.LinkedList,datos.Camion[])"},{"p":"planner","c":"LogisticaPlanner","l":"LogisticaPlanner()","u":"%3Cinit%3E()"}];updateSearchResults();

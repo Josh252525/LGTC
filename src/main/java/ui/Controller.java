@@ -52,7 +52,7 @@ public class Controller implements Initializable {
     private ConfigLogisTEC configuracionGlobal; 
     private Grafo ciudadGrafo;                  
     private int nodoDeposito;                   
-    private double factorEscala = 5.0; // Multiplicador para expandir coordenadas al tamaño del Pane
+    private double factorEscala = 15.0; // Multiplicador para expandir coordenadas al tamaño del Pane
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -157,9 +157,8 @@ public class Controller implements Initializable {
         // FASE 5: Persistencia del Reporte en Disco
         ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN);
         
-        ui.GeneradorEstadisticas.mostrarPanel(resultado, rutasFlotaMST, rutasFlotaNN, matrizFloyd, ciudadGrafo);
-        
-        
+        GeneradorEstadisticas.mostrarPanel(resultado, rutasFlotaMST, rutasFlotaNN, matrizFloyd);
+
         System.out.println("UI: Simulación logística completada. Mapa actualizado y reporte .csv exportado.");
     }
     
