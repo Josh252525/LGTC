@@ -60,7 +60,7 @@ public static void dibujarCiudad(Pane mapaPane, Ciudad ciudad, double factorEsca
             Text etiquetaId = new Text(textoId);
             etiquetaId.setX((v.x() * factorEscala) + 8); 
             etiquetaId.setY((v.y() * factorEscala) - 8); 
-            etiquetaId.setFill(Color.CYAN); // Color brillante
+            etiquetaId.setFill(Color.BLACK); // Color brillante
             etiquetaId.setFont(Font.font("Arial", 12));
             etiquetaId.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
             

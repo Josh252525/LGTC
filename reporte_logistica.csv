@@ -1,3 +1,3 @@
 ID_Camion,Peso_Ocupado,Capacidad_Maxima,Ruta_MST(Preorden),Ruta_NN(Vecino_Cercano)
-C01,25.0,25.0,"DEPOT -> Oficina_BN -> Farmacia_Salud -> Parque_Municipal -> Farmacia_Salud -> DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT","DEPOT -> Oficina_BN -> Farmacia_Salud -> Parque_Municipal -> Farmacia_Salud -> DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT"
-C02,20.0,20.0,"DEPOT -> Casa_Lopez -> DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> DEPOT","DEPOT -> Casa_Lopez -> DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> DEPOT"
+C01,23.0,25.0,"DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> Farmacia_Salud -> DEPOT","DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> Farmacia_Salud -> DEPOT"
+C02,18.0,20.0,"DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT","DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT"
