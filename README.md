@@ -22,7 +22,7 @@ Este proyecto fue desarrollado bajo los lineamientos académicos del **Tecnológ
 
 # Tabla de Contenidos
 
-1. [Características Principales](#-características-principales)
+1. [Características Principales](#-Características-Principales)
 2. [Arquitectura del Sistema](#-arquitectura-del-sistema)
 3. [Estructuras de Datos Implementadas](#-estructuras-de-datos-implementadas)
 4. [Algoritmos Utilizados](#-algoritmos-utilizados)
