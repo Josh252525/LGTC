@@ -1,265 +1,462 @@
-# LogísTEC (Sistema de Optimización Logística Urbana - Código: LGTC)
+# LogísTEC
 
-LogísTEC es una plataforma de software de grado empresarial desarrollada para la resolución del problema de optimización de rutas de distribución física de mercancías y el empaquetado tridimensional de carga dentro de redes urbanas complejas. El núcleo del sistema modela la infraestructura de transporte mediante abstracciones matemáticas de grafos ponderados y no dirigidos, aplicando algoritmos de optimización combinatoria y heurísticas avanzadas de enrutamiento y empaquetado.
+### Sistema de Optimización Logística Urbana (LGTC)
 
-Este sistema ha sido desarrollado bajo los lineamientos académicos e ingenieriles del Tecnológico de Costa Rica para el curso de Algoritmos y Estructuras de Datos I (CE1103).
-
----
-
-# 1. Especificaciones de Arquitectura y Estructuras de Datos Core
-
-Para cumplir con las restricciones de rendimiento de memoria, exclusión de recolectores automáticos ineficientes y control estricto sobre las complejidades temporales y espaciales (Big-O), se prohibió la importación del paquete funcional `java.util.*` en los módulos de procesamiento lógico.
-
-## 1.1 Tipos Abstractos de Datos (TAD) Propios
-
-El sistema cuenta con un paquete aislado de estructuras lineales y jerárquicas genéricas implementadas desde cero:
-
-* **LinkedList<T> (Lista Enlazada Simple Genérica):** Estructura base para el almacenamiento dinámico con punteros explícitos a nodos adyacentes, optimizada con métodos de búsqueda binaria y secuencial integrada (`searchFor`) para la supresión indexada de elementos en O(1) tras localización.
-* **Grafo por Listas de Adyacencia:** Representación dispersa de la matriz urbana. Minimiza la complejidad espacial a O(V + A), permitiendo consultas aceleradas de vecinos mediante el filtrado inmediato de aristas interconectadas.
-* **Colas de Prioridad (Binary Heaps):** Utilizadas para la optimización interna del ordenamiento dinámico de fronteras de exploración en los algoritmos de expansión mínima.
-
-## 1.2 Motores Algorítmicos Integrados
-
-* **Clausura Transitiva (Algoritmo de Warshall):** Ejecutado en la fase de preprocesamiento logístico para calcular la matriz de alcanzabilidad booleana, aislando las solicitudes dirigidas a subgrafos desconectados.
-* **Caminos Mínimos Globales (Algoritmo de Floyd-Warshall):** Genera la matriz de distancias geodésicas inter-nodales completas con una complejidad temporal estricta de O(V³), sirviendo como caché de consulta O(1) para las heurísticas de ruteo.
-* **Ruteo de Trayectorias (Algoritmo de Dijkstra):** Utilizado para expandir las macro-secuencias lógicas en micro-rutas físicas reales calle por calle, evitando colisiones lógicas en aristas inexistentes.
+![Java](https://img.shields.io/badge/Java-17-orange)
+![JavaFX](https://img.shields.io/badge/JavaFX-17-blue)
+![Maven](https://img.shields.io/badge/Maven-3.8%2B-red)
+![JUnit](https://img.shields.io/badge/JUnit-5-green)
+![Status](https://img.shields.io/badge/Status-Acad%C3%A9mico-success)
 
 ---
 
-# 2. Requisitos de Infraestructura y Entorno
+## Descripción General
 
-El sistema operativo y los componentes de hardware deben cumplir con la siguiente matriz de compatibilidad para garantizar la estabilidad de los hilos de renderizado y el procesamiento de matrices tridimensionales.
+**LogísTEC** es una plataforma de software diseñada para optimizar procesos logísticos urbanos mediante técnicas avanzadas de teoría de grafos, algoritmos de caminos mínimos, árboles de expansión mínima y heurísticas de empaquetado.
 
-## 2.1 Requisitos de Software y Compatibilidad de Sistema Operativo
+El sistema permite modelar una ciudad como una red de distribución, analizar la conectividad entre puntos de entrega, asignar paquetes a vehículos de forma eficiente y generar rutas optimizadas para la distribución de mercancías.
 
-### Sistemas Operativos Soportados
-
-* **GNU/Linux:** Distribuciones basadas en Debian/RHEL (Ubuntu 20.04 LTS o superior verificado).
-* **Microsoft Windows:** Windows 10 y Windows 11 arquitecturas x64 de forma nativa.
-* **macOS:** Versión 12 (Monterey) o superior con soporte para arquitecturas Intel y Apple Silicon.
-
-### Dependencias
-
-* **Java Development Kit (JDK):** Versión 17 LTS.
-* **Apache Maven:** Versión 3.8.1 o superior.
-* **JavaFX:** Versión 17.
-* **Google GSON:** Versión 2.10.1.
-
-## 2.2 Requisitos Mínimos y Recomendados de Hardware
-
-### Procesador (CPU)
-
-* Mínimo: Dual-Core 2.4 GHz x64.
-* Recomendado: Quad-Core 3.0 GHz o superior.
-
-### Memoria RAM
-
-* Mínimo: 4 GB.
-* Recomendado: 8 GB.
-
-### Almacenamiento
-
-* 200 MB de espacio libre para binarios, registros y reportes `.csv`.
+Este proyecto fue desarrollado bajo los lineamientos académicos del **Tecnológico de Costa Rica (TEC)** para el curso **CE1103 - Algoritmos y Estructuras de Datos I**.
 
 ---
 
-# 3. Guía de Instalación y Configuración del Sistema
+# Tabla de Contenidos
 
-Siga la siguiente secuencia de comandos dentro de una terminal Unix o PowerShell.
+1. [Características Principales](#-características-principales)
+2. [Arquitectura del Sistema](#-arquitectura-del-sistema)
+3. [Estructuras de Datos Implementadas](#-estructuras-de-datos-implementadas)
+4. [Algoritmos Utilizados](#-algoritmos-utilizados)
+5. [Requisitos del Sistema](#-requisitos-del-sistema)
+6. [Instalación](#-instalación)
+7. [Formato de Entrada](#-formato-de-entrada)
+8. [Flujo de Procesamiento](#-flujo-de-procesamiento)
+9. [Salida y Reportes](#-salida-y-reportes)
+10. [Pruebas Unitarias](#-pruebas-unitarias)
 
-## 3.1 Clonación del Repositorio
+---
+
+# Características Principales
+
+* Modelado de ciudades mediante grafos ponderados.
+* Detección de conectividad utilizando Warshall.
+* Cálculo de distancias mínimas mediante Floyd-Warshall.
+* Generación de rutas reales utilizando Dijkstra.
+* Construcción de Árboles de Expansión Mínima (MST).
+* Asignación eficiente de paquetes mediante Best-Fit.
+* Comparación de heurísticas para el problema del viajante (TSP).
+* Visualización gráfica interactiva con JavaFX.
+* Generación automática de reportes CSV.
+* Estadísticas de rendimiento y utilización de recursos.
+
+---
+
+# Arquitectura del Sistema
+
+```mermaid
+flowchart LR
+
+A[Archivo JSON]
+--> B[Json Parser]
+
+B --> C[Construcción del Grafo]
+C --> D[Warshall]
+
+D --> E[MST]
+E --> F[Asignación Best-Fit]
+
+F --> G[Heurística MST]
+F --> H[Nearest Neighbor]
+
+G --> I[Dijkstra]
+H --> I
+
+I --> J[Dashboard]
+I --> K[Reporte CSV]
+```
+
+---
+
+# Estructuras de Datos Implementadas
+
+Debido a las restricciones académicas del proyecto, no se permite el uso de las estructuras de datos de `java.util.*` en la lógica principal.
+
+Por esta razón se implementaron estructuras personalizadas desde cero.
+
+## LinkedList<T>
+
+Lista enlazada simple genérica utilizada para:
+
+* Almacenamiento dinámico.
+* Recorridos secuenciales.
+* Inserción y eliminación de nodos.
+
+### Complejidades
+
+| Operación   | Complejidad |
+| ----------- | ----------- |
+| Inserción   | O(1)        |
+| Eliminación | O(n)        |
+| Búsqueda    | O(n)        |
+
+---
+
+## Grafo por Listas de Adyacencia
+
+Representación principal de la ciudad.
+
+### Ventajas
+
+* Menor consumo de memoria.
+* Ideal para grafos dispersos.
+* Consultas rápidas de vecinos.
+
+### Complejidad Espacial
+
+```text
+O(V + A)
+```
+
+donde:
+
+* V = número de vértices
+* A = número de aristas
+
+---
+
+## Cola de Prioridad (Binary Heap)
+
+Utilizada en:
+
+* Dijkstra
+* Construcción de MST
+* Selección eficiente de nodos
+
+---
+
+# Algoritmos Utilizados
+
+## Warshall
+
+Determina si existe conectividad entre dos puntos de la ciudad.
+
+### Aplicación
+
+* Detectar destinos inaccesibles.
+* Evitar asignaciones imposibles.
+
+### Complejidad
+
+```text
+O(V³)
+```
+
+---
+
+## Floyd-Warshall
+
+Calcula todas las distancias mínimas entre pares de vértices.
+
+### Beneficio
+
+Permite consultas de distancia en:
+
+```text
+O(1)
+```
+
+una vez finalizado el preprocesamiento.
+
+### Complejidad
+
+```text
+O(V³)
+```
+
+---
+
+## Dijkstra
+
+Genera rutas reales sobre la red urbana.
+
+### Utilizado para
+
+* Convertir rutas abstractas en recorridos físicos.
+* Obtener caminos mínimos entre ubicaciones.
+
+### Complejidad
+
+```text
+O((V + A) log V)
+```
+
+---
+
+## MST (Minimum Spanning Tree)
+
+Construye una ruta maestra que conecta todos los puntos de interés minimizando el costo total.
+
+### Objetivo
+
+Reducir la longitud global de distribución.
+
+---
+
+## Best-Fit
+
+Heurística utilizada para la asignación de paquetes a camiones.
+
+### Criterios
+
+* Capacidad restante.
+* Peso.
+* Prioridad.
+* Ubicación geográfica.
+
+---
+
+## Nearest Neighbor
+
+Heurística codiciosa para aproximar soluciones al TSP.
+
+### Estrategia
+
+Seleccionar siempre el siguiente destino más cercano.
+
+---
+
+# Requisitos del Sistema
+
+## Software
+
+| Componente | Versión |
+| ---------- | ------- |
+| Java JDK   | 17 LTS  |
+| Maven      | 3.8.1+  |
+| JavaFX     | 17      |
+| Gson       | 2.10.1  |
+| JUnit      | 5       |
+
+---
+
+## Sistemas Operativos Compatibles
+
+### Linux
+
+* Ubuntu 20.04+
+* Fedora
+* Debian
+* Distribuciones compatibles
+
+### Windows
+
+* Windows 10
+* Windows 11
+
+### macOS
+
+* Monterey (12+) o superior
+
+---
+
+## Hardware Recomendado
+
+| Recurso | Mínimo            | Recomendado       |
+| ------- | ----------------- | ----------------- |
+| CPU     | Dual Core 2.4 GHz | Quad Core 3.0 GHz |
+| RAM     | 4 GB              | 8 GB              |
+| Disco   | 200 MB            | 500 MB            |
+
+---
+
+# ⚙ Instalación
+
+## Clonar el repositorio
 
 ```bash
 git clone https://github.com/tu-usuario/LGTC.git
 cd LGTC
 ```
 
-## 3.2 Compilación y Verificación
+## Compilar el proyecto
 
 ```bash
 mvn clean compile
 ```
 
-## 3.3 Ejecución en Entornos CI sin Monitor
-
-Debido a que el proyecto cuenta con pruebas automáticas que validan componentes JavaFX, en entornos de integración continua puede requerirse una pantalla virtual mediante `xvfb`.
-
-```bash
-xvfb-run mvn -B package --file pom.xml
-```
-
----
-
-# 4. Manual de Operación y Usuario
-
-El sistema opera bajo una arquitectura dirigida por eventos que transforma datos tabulares estructurados en decisiones de ruteo geográfico.
-
-```text
-[Archivo JSON]
-        │
-        ▼
-[Parser e Inyección]
-        │
-        ▼
-[Filtro Warshall]
-        │
-        ▼
-[Ruta Maestra MST]
-        │
-        ▼
-[Best-Fit Flota]
-        │
-        ▼
-[Enrutamiento Final]
-        │
-        ▼
-[Dashboard / CSV]
-```
-
-## 4.1 Formato del Dataset de Entrada
-
-El sistema requiere un archivo `.json` con la siguiente estructura:
-
-```json
-{
-  "ciudad": {
-    "vertices": [
-      { "id": 0, "tipo": "DEPOT", "x": 100, "y": 150 },
-      { "id": 1, "tipo": "CLIENTE", "x": 300, "y": 450 }
-    ],
-    "aristas": [
-      { "u": 0, "v": 1, "distancia": 12.5 }
-    ]
-  },
-  "paquetes": [
-    { "id": "P01", "destino": 1, "peso": 25.0, "prioridad": 1 }
-  ],
-  "camiones": [
-    { "id": "C01", "capacidad": 150.0 }
-  ]
-}
-```
-
-## 4.2 Ejecución e Ingesta de Datos
-
-Inicie la aplicación mediante:
+## Ejecutar la aplicación
 
 ```bash
 mvn javafx:run
 ```
 
-Posteriormente:
+---
 
-1. Presione el botón de carga.
-2. Seleccione un archivo JSON válido.
-3. El sistema procesará el archivo utilizando el componente `JsonParser`.
-4. Se renderizarán los nodos urbanos en pantalla:
+# Formato de Entrada
 
-   * DEPOT: rojo.
-   * Clientes: gris.
+El sistema recibe información mediante un archivo JSON.
 
-## 4.3 Procesamiento Logístico (Route-First, Cluster-Second)
+## Ejemplo
 
-Al iniciar el cálculo automático se ejecutan las siguientes etapas:
+```json
+{
+  "ciudad": {
+    "vertices": [
+     {
+        "id": 0,
+        "tipo": "DEPOT",
+        "x": 100,
+        "y": 150
+      }
+    ],
+    "aristas": [
+      {
+        "u": 0,
+        "v": 1,
+        "distancia": 12.5
+      }
+    ]
+  },
 
-### Evaluación de Viabilidad (Warshall)
+  "paquetes": [
+    {
+      "id": "P01",
+      "destino": 1,
+      "peso": 25,
+      "prioridad": 1
+    }
+  ],
 
-Se determina qué destinos son alcanzables dentro del grafo urbano. Los paquetes con destinos inaccesibles son descartados.
-
-### Construcción de la Ruta Maestra
-
-Se calcula un Árbol de Expansión Mínima (MST) que conecta todos los puntos de entrega partiendo desde el depósito central.
-
-### Asignación de Carga (Best-Fit)
-
-Los paquetes alcanzables se ordenan considerando:
-
-* Posición geográfica.
-* Prioridad.
-* Peso.
-
-Posteriormente se asignan a los camiones minimizando el espacio desperdiciado.
-
-## 4.4 Evaluación de Heurísticas
-
-El sistema compara dos estrategias para resolver el problema del viajante (TSP):
-
-### Estrategia MST (Prim + DFS Preorden)
-
-* Genera recorridos libres de ciclos.
-* Mantiene límites de aproximación controlados.
-
-### Estrategia Nearest Neighbor
-
-* Algoritmo codicioso (Greedy).
-* Selecciona el siguiente nodo más cercano en cada paso.
-
-Las rutas obtenidas son refinadas utilizando Dijkstra para producir recorridos reales sobre la red vial.
+  "camiones": [
+    {
+      "id": "C01",
+      "capacidad": 150
+    }
+  ]
+}
+```
 
 ---
 
-# 5. Salidas del Sistema y Reportabilidad
+# Flujo de Procesamiento
 
-## 5.1 Reporte CSV
+```mermaid
+flowchart TD
 
-Al finalizar el procesamiento se genera automáticamente:
+A[Cargar JSON]
+--> B[Parsear Datos]
+
+B --> C[Construir Grafo]
+C --> D[Warshall]
+
+D --> E[MST]
+E --> F[Best-Fit]
+
+F --> G[MST + DFS]
+F --> H[Nearest Neighbor]
+
+G --> I[Dijkstra]
+H --> I
+
+I --> J[Reporte CSV]
+I --> K[Dashboard]
+```
+
+---
+
+# Salida y Reportes
+
+## Reporte CSV
+
+Al finalizar la ejecución se genera:
 
 ```text
 reporte_logistica.csv
 ```
 
-El archivo contiene:
+### Información incluida
 
-### Métricas de la Flota
+#### Flota
 
-* ID del camión.
-* Peso total transportado.
-* Capacidad máxima.
-* Lista de paquetes asignados.
-* Ruta calculada mediante MST.
-* Tiempo de CPU del algoritmo MST.
-* Ruta calculada mediante Nearest Neighbor.
-* Tiempo de CPU del algoritmo Nearest Neighbor.
+* ID del camión
+* Peso total transportado
+* Capacidad utilizada
+* Lista de paquetes
+* Distancia recorrida
+* Tiempo de CPU
 
-### Métricas de Paquetes Excluidos
+#### Paquetes Excluidos
 
-* ID del paquete.
-* Destino.
-* Peso.
-* Prioridad.
-* Motivo de exclusión:
-
-  * Falta de espacio.
-  * Destino inalcanzable.
-
-## 5.2 Dashboard Analítico
-
-De manera simultánea a la generación del CSV, el componente `GeneradorEstadisticas` despliega un panel interactivo con:
-
-* Porcentaje de utilización de cada camión.
-* Eficiencia de empaquetado.
-* Comparación de algoritmos.
-* Determinación del algoritmo más eficiente según:
-
-  * Tiempo de CPU.
-  * Distancia total recorrida.
+* ID
+* Destino
+* Peso
+* Prioridad
+* Motivo de exclusión
 
 ---
 
-# 6. Aseguramiento de Calidad y Pruebas Unitarias
+## Dashboard Estadístico
 
-El proyecto incluye pruebas automatizadas mediante:
+Muestra:
+
+* Utilización de vehículos.
+* Eficiencia de empaquetado.
+* Comparación MST vs Nearest Neighbor.
+* Tiempo de ejecución.
+* Distancia total recorrida.
+
+---
+
+# Pruebas Unitarias
+
+El proyecto incorpora pruebas automatizadas mediante:
 
 * JUnit 5
-* Maven Surefire Plugin
+* Maven Surefire
 
-Para ejecutar toda la batería de pruebas:
+## Ejecutar todas las pruebas
 
 ```bash
-mvn surefire:test
+mvn clean test
 ```
 
-Se recomienda ejecutar estas pruebas antes de cada entrega o integración para garantizar la estabilidad funcional del sistema.
+## Ejecutar pruebas en CI sin monitor gráfico
+
+```bash
+xvfb-run mvn clean -B package --file pom.xml
+```
+
+---
+
+# Complejidades Algorítmicas
+
+| Algoritmo        | Complejidad    |
+| ---------------- | -------------- |
+| Warshall         | O(V³)          |
+| Floyd-Warshall   | O(V³)          |
+| Dijkstra         | O((V+A) log V) |
+| MST (Prim)       | O(A log V)     |
+| Best-Fit         | O(n log n)     |
+| Nearest Neighbor | O(n²)          |
+
+---
+
+# Equipo de Desarrollo
+
+Proyecto desarrollado para:
+
+**Tecnológico de Costa Rica (TEC)**
+
+Curso:
+
+**CE1103 - Algoritmos y Estructuras de Datos I**
+
+---
+
+# Licencia
+
+Este proyecto tiene fines académicos y educativos.
+
+Su uso, modificación y distribución quedan sujetos a las políticas establecidas por el curso y la institución.
 
 ## Authors
 
