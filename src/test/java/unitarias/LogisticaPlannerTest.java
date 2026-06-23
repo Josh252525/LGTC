@@ -32,7 +32,7 @@ public class LogisticaPlannerTest {
         Paquete[] paquetes = {
             new Paquete("P01", 2, 40.0, 2),  // Prioridad 2, Peso 40
             new Paquete("PO2", 3, 30.0, 1),  // Prioridad 1, Peso 30 (Debe ir primero)
-            new Paquete("PO3", 4, 60.0, 1)   // Prioridad 1, Peso 60 (Debe ir MÁS primero por ser pesado)
+            new Paquete("PO3	", 4, 60.0, 1)   // Prioridad 1, Peso 60 (Debe ir MÁS primero por ser pesado)
         };
 
         LinkedList<Paquete> inalcanzables = new LinkedList<>();
@@ -69,10 +69,11 @@ public class LogisticaPlannerTest {
 
         // El paquete de 20kg debió entrar, el de 100kg debió irse a no asignados
         assertEquals(1, resultado.noAsignados().size(), "Un paquete debió ser rechazado por sobrepeso");
-        assertEquals(2, resultado.noAsignados().getAt(0).id(), "El paquete rechazado debe ser el ID 2");
+        
+        // CORRECCIÓN: Ahora espera el texto "PO2" en lugar del número 2
+        assertEquals("PO2", resultado.noAsignados().getAt(0).id(), "El paquete rechazado debe ser el ID PO2");
         assertEquals(30.0, resultado.flota()[0].getCapacidadRestante());
     }
-
     @Test
     public void testEmpatePerfecto() {
         // Si un camión tiene exactamente el tamaño del paquete, el sobrante es 0 (ajuste perfecto)

@@ -78,11 +78,10 @@ public class ValidadorPaquetesTest {
         // --- 3. Ejecutar Validación ---
         LinkedList<Paquete> rechazados = validador.validarPaquetes();
 
-        // --- 4. Comprobar resultados ---
-        assertEquals(1, rechazados.size(), "Debe haber exactamente 1 paquete rechazado");
+        // --- 4. Comprobar ---
+        assertEquals(1, rechazados.size(), "Debe haber 1 paquete inalcanzable");
         
-        // Obtenemos el primer (y único) paquete de la lista enlazada personalizada
-        Paquete rechazado = rechazados.getAt(0);
-        assertEquals(2, rechazado.id(), "El paquete rechazado debe ser el ID 2 porque iba al nodo aislado");
+        // CORRECCIÓN: Ahora espera el texto "P02" en lugar del número 2
+        assertEquals("P02", rechazados.getAt(0).id(), "El paquete rechazado debe ser el ID P02 porque iba al nodo aislado");
     }
 }

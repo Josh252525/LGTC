@@ -19,10 +19,9 @@ public class DibujanteMapa {
      * @param ciudad El DTO con los vértices y aristas.
      * @param factorEscala Multiplicador para escalar las coordenadas a la pantalla.
      */
-    public static void dibujarCiudad(Pane mapaPane, Ciudad ciudad, double factorEscala) {
+public static void dibujarCiudad(Pane mapaPane, Ciudad ciudad, double factorEscala) {
         
         // 1. DIBUJAR LAS CALLES (Líneas de fondo)
-        // Se dibujan primero para que queden por debajo de las ciudades
         for (Arista arista : ciudad.aristas()) {
             Vertice origen = buscarVerticePorId(ciudad.vertices(), arista.u());
             Vertice destino = buscarVerticePorId(ciudad.vertices(), arista.v());
@@ -33,33 +32,38 @@ public class DibujanteMapa {
                     destino.x() * factorEscala, destino.y() * factorEscala
                 );
                 
-                // Un gris oscuro para que no sature visualmente el modo oscuro
                 calle.setStroke(Color.web("#555555")); 
                 calle.setStrokeWidth(2.0);
                 mapaPane.getChildren().add(calle);
             }
         }
-        
+
         // 2. DIBUJAR LAS CIUDADES (Círculos) Y SUS ETIQUETAS
         for (Vertice v : ciudad.vertices()) {
             Circle ciudadGrafica = new Circle(v.x() * factorEscala, v.y() * factorEscala, 6.0);
             
-            // Lógica para diferenciar el Depósito de las ciudades normales
             if (v.tipo().equalsIgnoreCase("DEPOT")) {
                 ciudadGrafica.setFill(Color.RED);
-                ciudadGrafica.setRadius(9.0); // El depósito es más grande
+                ciudadGrafica.setRadius(9.0); 
             } else {
                 ciudadGrafica.setFill(Color.LIGHTGRAY);
             }
             
-            // 3. TEXTO NEÓN (ID de la ciudad)
-            Text etiquetaId = new Text(datos.JsonParser.diccionarioNombres[v.id()]);
-            etiquetaId.setX((v.x() * factorEscala) + 8); // Desplazado un poco a la derecha
-            etiquetaId.setY((v.y() * factorEscala) - 8); // Desplazado un poco hacia arriba
-            etiquetaId.setFill(Color.BLACK);
+            // 3. TEXTO NEÓN (ID de la ciudad) - AHORA A PRUEBA DE PRUEBAS UNITARIAS
+            String textoId = String.valueOf(v.id()); // Por defecto usamos el número
+            
+            // Si el JsonParser corrió y llenó el diccionario, usamos el nombre real
+            if (datos.JsonParser.diccionarioNombres != null && v.id() < datos.JsonParser.diccionarioNombres.length) {
+                textoId = datos.JsonParser.diccionarioNombres[v.id()];
+            }
+
+            Text etiquetaId = new Text(textoId);
+            etiquetaId.setX((v.x() * factorEscala) + 8); 
+            etiquetaId.setY((v.y() * factorEscala) - 8); 
+            etiquetaId.setFill(Color.CYAN); // Color brillante
             etiquetaId.setFont(Font.font("Arial", 12));
             etiquetaId.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-            // Agregamos tanto el círculo como el texto al panel
+            
             mapaPane.getChildren().addAll(ciudadGrafica, etiquetaId);
         }
     }
