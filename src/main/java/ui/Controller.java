@@ -111,7 +111,6 @@ public class Controller implements Initializable {
         
         LinkedList<Paquete> listaAlcanzables = new LinkedList<>();
         for (Paquete p : config.paquetes()) {
-            // Si el paquete no se encuentra en la lista de rechazados, es apto para ruteo
             if (inalcanzables.searchFor(p) == -1) {
                 listaAlcanzables.insert(p);
             }
@@ -137,16 +136,20 @@ public class Controller implements Initializable {
         LinkedList<Integer> rutaMaestraGlobal = enrutadorMaestro.generarRuta(depositoId, destinosGlobales, matrizFloyd);
 
         // =====================================================================
-        // 📦 FASE 2: CLUSTER-SECOND (El planner empaca respetando el orden geográfico)
+        // 📦 FASE 2: CLUSTER-SECOND (El planner empaca respetando el orden)
         // =====================================================================
         LogisticaPlanner planner = new LogisticaPlanner();
         ResultadoLogistica resultado = planner.asignarCarga(paquetesAlcanzables, inalcanzables, config.camiones(), rutaMaestraGlobal);
 
         // =====================================================================
-        // 🛣️ FASE 3: ENRUTAMIENTO INDIVIDUAL (MST vs Nearest Neighbor Concurrente)
+        // 🛣️ FASE 3: ENRUTAMIENTO INDIVIDUAL CON CRONÓMETRO DE CPU
         // =====================================================================
         LinkedList<LinkedList<Integer>> rutasFlotaMST = new LinkedList<>();
         LinkedList<LinkedList<Integer>> rutasFlotaNN = new LinkedList<>();
+        
+        // Listas nuevas para almacenar los tiempos por camión
+        LinkedList<Long> tiemposMST = new LinkedList<>();
+        LinkedList<Long> tiemposNN = new LinkedList<>();
 
         EnrutadorMST enrutadorMST = new EnrutadorMST();
         EnrutadorNearestNeighbor enrutadorNN = new EnrutadorNearestNeighbor();
@@ -156,42 +159,55 @@ public class Controller implements Initializable {
             LinkedList<Integer> destinosCamion = extraerDestinos(camion.getPaquetesCargados());
 
             if (destinosCamion.size() > 0) {
-                // 1. Calcular Secuencias Macros (Orden de paradas lógicas)
+                
+                // ⏱️ Medición de la Estrategia MST
+                long inicioMST = System.nanoTime();
                 LinkedList<Integer> macroMST = enrutadorMST.generarRuta(depositoId, destinosCamion, matrizFloyd);
-                LinkedList<Integer> macroNN = enrutadorNN.generarRuta(depositoId, destinosCamion, matrizFloyd);
-
-                // 2. Expandir a Secuencias Micros (Calles físicas reales paso a paso usando Dijkstra)
                 LinkedList<Integer> microMST = expandirRutaConDijkstra(macroMST);
+                long finMST = System.nanoTime();
+                tiemposMST.insert(finMST - inicioMST);
+
+                // ⏱️ Medición de la Estrategia Nearest Neighbor
+                long inicioNN = System.nanoTime();
+                LinkedList<Integer> macroNN = enrutadorNN.generarRuta(depositoId, destinosCamion, matrizFloyd);
                 LinkedList<Integer> microNN = expandirRutaConDijkstra(macroNN);
+                long finNN = System.nanoTime();
+                tiemposNN.insert(finNN - inicioNN);
 
                 rutasFlotaMST.insert(microMST);
                 rutasFlotaNN.insert(microNN);
             } else {
-                // Si el camión se quedó vacío, su ruta es permanecer estático en la base
                 LinkedList<Integer> rutaVacia = new LinkedList<>();
                 rutaVacia.insert(depositoId);
                 rutasFlotaMST.insert(rutaVacia);
                 rutasFlotaNN.insert(rutaVacia);
+                
+                // Si está vacío, tardó 0 nanosegundos
+                tiemposMST.insert(0L);
+                tiemposNN.insert(0L);
             }
         }
-        
+
      // =====================================================================
-        // 4. GUARDAR RESULTADOS EN DISCO (Usa la firma exacta de tu ExportadorCSV)
+        // 4. GUARDAR RESULTADOS EN DISCO Y DIBUJAR
         // =====================================================================
-        ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN);
+        // Le pasamos los tiempos al exportador para que los ponga en el CSV
+        ExportadorCSV.generarReporte("reporte_logistica.csv", resultado, rutasFlotaMST, rutasFlotaNN, tiemposMST, tiemposNN);
         archivocargadolabel.setText("✅ Rutas calculadas y reporte_logistica.csv exportado.");
 
-        // =====================================================================
-        // 5. DIBUJAR LAS RUTAS EN EL MAPA (El toque final visual)
-        // =====================================================================
-        // Dibujamos las rutas (usando las de MST como vista principal) y los anillos de destino
         DibujanteRutas.dibujarRutas(mapaPane, rutasFlotaMST, config.ciudad(), 1.0);
         DibujanteRutas.dibujarDestinos(mapaPane, destinosGlobales, config.ciudad(), 1.0);
 
         // =====================================================================
-        // 6. LANZAR PANEL ANALÍTICO DE ESTADÍSTICAS Y BENCHMARKS
+        // 5. DIBUJAR LAS RUTAS EN EL MAPA 
         // =====================================================================
-        GeneradorEstadisticas.mostrarPanel(resultado, rutasFlotaMST, rutasFlotaNN, matrizFloyd, ciudadGrafo);
+        DibujanteRutas.dibujarRutas(mapaPane, rutasFlotaMST, config.ciudad(), 1.0);
+        DibujanteRutas.dibujarDestinos(mapaPane, destinosGlobales, config.ciudad(), 1.0);
+
+        // =====================================================================
+        // 6. LANZAR PANEL ANALÍTICO DE ESTADÍSTICAS (¡AHORA CON TIEMPOS!)
+        // =====================================================================
+        GeneradorEstadisticas.mostrarPanel(resultado, rutasFlotaMST, rutasFlotaNN, tiemposMST, tiemposNN, matrizFloyd, ciudadGrafo);
     }
 
     private LinkedList<Integer> extraerDestinos(LinkedList<Paquete> paquetes) {

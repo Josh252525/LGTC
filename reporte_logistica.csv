@@ -1,3 +1,9 @@
-ID_Camion,Peso_Ocupado,Capacidad_Maxima,Ruta_MST(Preorden),Ruta_NN(Vecino_Cercano)
-C01,23.0,25.0,"DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> Farmacia_Salud -> DEPOT","DEPOT -> Oficina_BN -> Super_Mega -> Oficina_BN -> Farmacia_Salud -> DEPOT"
-C02,18.0,20.0,"DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT","DEPOT -> Casa_Lopez -> Escuela_Central -> Casa_Lopez -> DEPOT"
+--- REPORTE DE FLOTA ---
+ID_Camion,Peso_Ocupado,Capacidad_Maxima,Paquetes_A_Bordo,Ruta_MST(Preorden),Tiempo_MST(ns),Ruta_NN(Vecino_Cercano),Tiempo_NN(ns)
+1,30.0,50.0,"104","0 -> 1 -> 3 -> 1 -> 0",114246,"0 -> 1 -> 3 -> 1 -> 0",40144
+2,20.0,40.0,"101","0 -> 1 -> 0",50058,"0 -> 1 -> 0",26470
+
+--- REPORTE DE PAQUETES RECHAZADOS ---
+ID_Paquete,Destino,Peso,Prioridad,Motivo_Rechazo
+103,5,10.0,2,Inalcanzable (Bloqueado / Sin calles)
+102,4,45.0,1,Falta de espacio en la flota (Best-Fit)

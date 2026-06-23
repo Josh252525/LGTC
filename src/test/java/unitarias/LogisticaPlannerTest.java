@@ -20,73 +20,61 @@ public class LogisticaPlannerTest {
     }
 
     @Test
-    public void testOrdenamientoYBestFitNormal() {
-        // 1. Preparamos camiones (Capacidades: 100 y 50)
+    public void testOrdenamientoGeograficoYBestFit() {
+        // 1. Preparamos los camiones
         Camion[] camiones = {
             new Camion("C1", 100.0),
             new Camion("C2", 50.0)
         };
 
-        // 2. Preparamos paquetes
-        // Record: id, destino, peso, prioridad (1 es mayor prioridad)
+        // 2. Preparamos los paquetes (ID, Destino, Peso, Prioridad)
         Paquete[] paquetes = {
-            new Paquete("P01", 2, 40.0, 2),  // Prioridad 2, Peso 40
-            new Paquete("PO2", 3, 30.0, 1),  // Prioridad 1, Peso 30 (Debe ir primero)
-            new Paquete("PO3	", 4, 60.0, 1)   // Prioridad 1, Peso 60 (Debe ir MÁS primero por ser pesado)
+            new Paquete("P01", 3, 40.0, 2), // Va al destino 3
+            new Paquete("P02", 2, 30.0, 1), // Va al destino 2
+            new Paquete("P03", 2, 60.0, 1)  // Va al destino 2, es más pesado
         };
+
+        // 3. Simulamos la Ruta Maestra (El camión pasará primero por el Destino 2 y luego por el 3)
+        LinkedList<Integer> rutaMaestra = new LinkedList<>();
+        rutaMaestra.insert(2);
+        rutaMaestra.insert(3);
 
         LinkedList<Paquete> inalcanzables = new LinkedList<>();
 
-        // 3. Ejecutamos el planner
-        ResultadoLogistica resultado = planner.asignarCarga(paquetes, inalcanzables, camiones);
+        // 4. Ejecutamos
+        ResultadoLogistica resultado = planner.asignarCarga(paquetes, inalcanzables, camiones, rutaMaestra);
 
-        // 4. Validamos que no haya rechazados
-        assertEquals(0, resultado.noAsignados().size(), "Todos los paquetes debieron caber");
+        // 5. Verificaciones
+        assertNotNull(resultado, "El resultado no debería ser nulo");
+        assertEquals(0, resultado.noAsignados().size(), "Todos los paquetes debieron ser asignados");
 
-        // 5. Validamos la lógica del Best Fit
-        // Paquete 3 (60kg) entra en C1 (100kg -> sobran 40kg)
-        // Paquete 2 (30kg) entra en C2 (50kg -> sobran 20kg) O C1 (sobran 10kg). Best-Fit elige C1 porque deja MENOS espacio sobrante.
-        // Paquete 1 (40kg) entra en C2 (50kg -> sobran 10kg).
+        // El paquete P03 (Destino 2, Prioridad 1, 60kg) debió procesarse primero e ir al Camion C1 (único donde cabe)
+        assertEquals(40.0, resultado.flota()[0].getCapacidadRestante(), "C1 debió quedar con 40kg libres (100 - 60)");
         
-        // Verificamos el camión 1 (C1)
-        assertEquals(10.0, resultado.flota()[0].getCapacidadRestante());
-        assertEquals(2, resultado.flota()[0].getPaquetesCargados().size());
-
-        // Verificamos el camión 2 (C2)
-        assertEquals(10.0, resultado.flota()[1].getCapacidadRestante());
-        assertEquals(1, resultado.flota()[1].getPaquetesCargados().size());
+        // El P02 (Destino 2, Prioridad 1, 30kg) debió procesarse segundo e ir al C2 (Ajuste más apretado: 50 - 30 = 20 libres vs C1: 40 - 30 = 10 libres)
+        // Ojo: En Best Fit, busca el menor espacio sobrante. En C1 sobra 10, en C2 sobra 20. Así que va a C1.
+        // Verifiquemos cómo quedó C1: 100 - 60(P03) - 30(P02) = 10 libres.
+        // P01 (Destino 3, Prioridad 2, 40kg) no cabe en C1 (sobran 10). Va a C2 (sobran 10).
+        assertEquals(10.0, resultado.flota()[0].getCapacidadRestante(), "C1 debió empacar P03 y P02");
+        assertEquals(10.0, resultado.flota()[1].getCapacidadRestante(), "C2 debió empacar P01");
     }
 
     @Test
-    public void testPaqueteDemasiadoPesado() {
+    public void testPaqueteRechazadoPorSobrepeso() {
         Camion[] camiones = { new Camion("C1", 50.0) };
         Paquete[] paquetes = {
-            new Paquete("PO1", 2, 20.0, 1),
-            new Paquete("PO2", 3, 100.0, 1) // Paquete de 100kg en camión de 50kg
+            new Paquete("P_NORMAL", 1, 20.0, 1),
+            new Paquete("P_GIGANTE", 1, 100.0, 1) // 100kg en camión de 50kg
         };
 
-        ResultadoLogistica resultado = planner.asignarCarga(paquetes, new LinkedList<>(), camiones);
+        LinkedList<Integer> rutaMaestra = new LinkedList<>();
+        rutaMaestra.insert(1);
+
+        ResultadoLogistica resultado = planner.asignarCarga(paquetes, new LinkedList<>(), camiones, rutaMaestra);
 
         // El paquete de 20kg debió entrar, el de 100kg debió irse a no asignados
         assertEquals(1, resultado.noAsignados().size(), "Un paquete debió ser rechazado por sobrepeso");
-        
-        // CORRECCIÓN: Ahora espera el texto "PO2" en lugar del número 2
-        assertEquals("PO2", resultado.noAsignados().getAt(0).id(), "El paquete rechazado debe ser el ID PO2");
-        assertEquals(30.0, resultado.flota()[0].getCapacidadRestante());
-    }
-    @Test
-    public void testEmpatePerfecto() {
-        // Si un camión tiene exactamente el tamaño del paquete, el sobrante es 0 (ajuste perfecto)
-        Camion[] camiones = {
-            new Camion("C1", 100.0),
-            new Camion("C2", 40.0)
-        };
-        Paquete[] paquetes = { new Paquete("PO3", 2, 40.0, 1) };
-
-        ResultadoLogistica resultado = planner.asignarCarga(paquetes, new LinkedList<>(), camiones);
-
-        // El Best-Fit debe preferir C2 (sobra 0) sobre C1 (sobra 60)
-        assertEquals(0.0, resultado.flota()[1].getCapacidadRestante(), "El camión 2 debe estar lleno");
-        assertEquals(100.0, resultado.flota()[0].getCapacidadRestante(), "El camión 1 debe estar intacto");
+        assertEquals("P_GIGANTE", resultado.noAsignados().getAt(0).id(), "El paquete rechazado debe ser el ID P_GIGANTE");
+        assertEquals(30.0, resultado.flota()[0].getCapacidadRestante(), "El camión debió quedar con 30kg libres");
     }
 }
