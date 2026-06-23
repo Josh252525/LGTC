@@ -30,9 +30,9 @@ public class LogisticaPlannerTest {
         // 2. Preparamos paquetes
         // Record: id, destino, peso, prioridad (1 es mayor prioridad)
         Paquete[] paquetes = {
-            new Paquete(1, 2, 40.0, 2),  // Prioridad 2, Peso 40
-            new Paquete(2, 3, 30.0, 1),  // Prioridad 1, Peso 30 (Debe ir primero)
-            new Paquete(3, 4, 60.0, 1)   // Prioridad 1, Peso 60 (Debe ir MÁS primero por ser pesado)
+            new Paquete("P01", 2, 40.0, 2),  // Prioridad 2, Peso 40
+            new Paquete("PO2", 3, 30.0, 1),  // Prioridad 1, Peso 30 (Debe ir primero)
+            new Paquete("PO3", 4, 60.0, 1)   // Prioridad 1, Peso 60 (Debe ir MÁS primero por ser pesado)
         };
 
         LinkedList<Paquete> inalcanzables = new LinkedList<>();
@@ -61,8 +61,8 @@ public class LogisticaPlannerTest {
     public void testPaqueteDemasiadoPesado() {
         Camion[] camiones = { new Camion("C1", 50.0) };
         Paquete[] paquetes = {
-            new Paquete(1, 2, 20.0, 1),
-            new Paquete(2, 3, 100.0, 1) // Paquete de 100kg en camión de 50kg
+            new Paquete("PO1", 2, 20.0, 1),
+            new Paquete("PO2", 3, 100.0, 1) // Paquete de 100kg en camión de 50kg
         };
 
         ResultadoLogistica resultado = planner.asignarCarga(paquetes, new LinkedList<>(), camiones);
@@ -80,7 +80,7 @@ public class LogisticaPlannerTest {
             new Camion("C1", 100.0),
             new Camion("C2", 40.0)
         };
-        Paquete[] paquetes = { new Paquete(1, 2, 40.0, 1) };
+        Paquete[] paquetes = { new Paquete("PO3", 2, 40.0, 1) };
 
         ResultadoLogistica resultado = planner.asignarCarga(paquetes, new LinkedList<>(), camiones);
 

@@ -14,7 +14,7 @@ public class MainFX extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/ventana_principal.fxml"));
         
         primaryStage.setTitle("LogísTEC - Enrutamiento y Logística");
-        primaryStage.setScene(new Scene(root, 760, 600)); // Las medidas de tu FXML
+        primaryStage.setScene(new Scene(root, 1200, 800)); // Las medidas de tu FXML
         primaryStage.setResizable(false);
         primaryStage.show();
     }

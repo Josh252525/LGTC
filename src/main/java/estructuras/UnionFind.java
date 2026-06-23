@@ -24,8 +24,6 @@ public class UnionFind {
 		}
 	}
 	
-	//También se llama Path Compression. 
-	//Dice "sube sube sube hasta encontrar al líder del grupo".
 	public int find(int x) {
 		if(parent[x] != x) {
 			parent[x] = find(parent[x]);

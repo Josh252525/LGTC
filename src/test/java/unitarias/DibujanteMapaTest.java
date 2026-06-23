@@ -17,7 +17,7 @@ import ui.DibujanteMapa;
 
 public class DibujanteMapaTest {
 
-    // 💡 TRUCO: Enciende el motor interno de JavaFX antes de empezar
+    // Enciende el motor interno de JavaFX antes de empezar
     @BeforeAll
     public static void initJFX() {
         try {

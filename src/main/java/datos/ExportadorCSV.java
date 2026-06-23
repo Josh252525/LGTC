@@ -71,7 +71,7 @@ public class ExportadorCSV {
         
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ruta.size(); i++) {
-            sb.append(ruta.getAt(i));
+            sb.append(datos.JsonParser.diccionarioNombres[ruta.getAt(i)]);
             if (i < ruta.size() - 1) {
                 sb.append(" -> ");
             }

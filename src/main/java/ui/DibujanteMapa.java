@@ -53,12 +53,12 @@ public class DibujanteMapa {
             }
             
             // 3. TEXTO NEÓN (ID de la ciudad)
-            Text etiquetaId = new Text(String.valueOf(v.id()));
+            Text etiquetaId = new Text(datos.JsonParser.diccionarioNombres[v.id()]);
             etiquetaId.setX((v.x() * factorEscala) + 8); // Desplazado un poco a la derecha
             etiquetaId.setY((v.y() * factorEscala) - 8); // Desplazado un poco hacia arriba
-            etiquetaId.setFill(Color.WHITE);
+            etiquetaId.setFill(Color.BLACK);
             etiquetaId.setFont(Font.font("Arial", 12));
-            
+            etiquetaId.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
             // Agregamos tanto el círculo como el texto al panel
             mapaPane.getChildren().addAll(ciudadGrafica, etiquetaId);
         }

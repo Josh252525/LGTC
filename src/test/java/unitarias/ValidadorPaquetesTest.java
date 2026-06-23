@@ -68,8 +68,8 @@ public class ValidadorPaquetesTest {
         Ciudad ciudad = new Ciudad(vertices, aristas);
 
         // --- 2. Preparar los paquetes ---
-        Paquete pBueno = new Paquete(1, 1, 5.0, 1);  // Va hacia el nodo 1 (Alcanzable)
-        Paquete pMalo = new Paquete(2, 2, 5.0, 1);   // Va hacia el nodo 2 (Inalcanzable)
+        Paquete pBueno = new Paquete("P01", 1, 5.0, 1);  // Va hacia el nodo 1 (Alcanzable)
+        Paquete pMalo = new Paquete("P02", 2, 5.0, 1);   // Va hacia el nodo 2 (Inalcanzable)
         Paquete[] paquetes = { pBueno, pMalo };
 
         ConfigLogisTEC config = new ConfigLogisTEC(ciudad, paquetes, new Camion[0]);

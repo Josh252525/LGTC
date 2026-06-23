@@ -1,9 +1,8 @@
 package estructuras;
 
 /*
-Documentación:
 Pila (Stack) Genérica basada en nuestra propia LinkedList.
-Reemplaza la antigua implementación de arreglos. Funciona bajo el principio LIFO.
+Funciona bajo el principio LIFO.
 */
 public class Pila<T> {
     
@@ -17,20 +16,20 @@ public class Pila<T> {
         return lista.size() == 0;
     }
 
-    // Apilar: Lo ponemos en el tope de la pila (al inicio)
+    // Apilar: Lo ponemos al inicio de la pila 
     public void push(T data) {
-        lista.insertAtStart(data); // Tu método que mete al principio
+        lista.insertAtStart(data); 
     }
 
-    // Desapilar: Sacamos el que está en el tope
+    // Desapilar: Sacamos el que está en el inicio
     public T pop() {
         if (isEmpty()) {
             System.out.println("La pila está vacía");
             return null;
         }
         
-        T valor = lista.getAt(0); // Tomamos el del tope
-        lista.deleteAt(0);        // Lo quitamos
+        T valor = lista.getAt(0); 
+        lista.deleteAt(0);        
         
         return valor;
     }

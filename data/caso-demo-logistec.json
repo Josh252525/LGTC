@@ -1,0 +1,162 @@
+{
+  "ciudad": {
+    "vertices": [
+      {
+        "id": "DEPOT",
+        "tipo": "DEPOT",
+        "x": 200,
+        "y": 200
+      },
+      {
+        "id": "Oficina_BN",
+        "tipo": "ENTREGA",
+        "x": 350,
+        "y": 180
+      },
+      {
+        "id": "Casa_Lopez",
+        "tipo": "ENTREGA",
+        "x": 120,
+        "y": 320
+      },
+      {
+        "id": "Farmacia_Salud",
+        "tipo": "ENTREGA",
+        "x": 400,
+        "y": 350
+      },
+      {
+        "id": "Super_Mega",
+        "tipo": "ENTREGA",
+        "x": 500,
+        "y": 200
+      },
+      {
+        "id": "Escuela_Central",
+        "tipo": "ENTREGA",
+        "x": 80,
+        "y": 450
+      },
+      {
+        "id": "Parque_Municipal",
+        "tipo": "ENTREGA",
+        "x": 450,
+        "y": 480
+      },
+      {
+        "id": "Iglesia_San_Jose",
+        "tipo": "ENTREGA",
+        "x": 700,
+        "y": 500
+      },
+      {
+        "id": "Clinica_Rural",
+        "tipo": "ENTREGA",
+        "x": 50,
+        "y": 80
+      }
+    ],
+    "aristas": [
+      {
+        "u": "DEPOT",
+        "v": "Oficina_BN",
+        "distancia": 180
+      },
+      {
+        "u": "DEPOT",
+        "v": "Casa_Lopez",
+        "distancia": 150
+      },
+      {
+        "u": "DEPOT",
+        "v": "Farmacia_Salud",
+        "distancia": 220
+      },
+      {
+        "u": "Oficina_BN",
+        "v": "Super_Mega",
+        "distancia": 120
+      },
+      {
+        "u": "Casa_Lopez",
+        "v": "Escuela_Central",
+        "distancia": 90
+      },
+      {
+        "u": "Farmacia_Salud",
+        "v": "Parque_Municipal",
+        "distancia": 100
+      },
+      {
+        "u": "Oficina_BN",
+        "v": "Farmacia_Salud",
+        "distancia": 200
+      },
+      {
+        "u": "Escuela_Central",
+        "v": "Casa_Lopez",
+        "distancia": 90
+      }
+    ]
+  },
+  "paquetes": [
+    {
+      "id": "P01",
+      "destino": "Casa_Lopez",
+      "peso": 8,
+      "prioridad": 1
+    },
+    {
+      "id": "P02",
+      "destino": "Oficina_BN",
+      "peso": 5,
+      "prioridad": 1
+    },
+    {
+      "id": "P03",
+      "destino": "Super_Mega",
+      "peso": 12,
+      "prioridad": 1
+    },
+    {
+      "id": "P04",
+      "destino": "Farmacia_Salud",
+      "peso": 6,
+      "prioridad": 2
+    },
+    {
+      "id": "P05",
+      "destino": "Parque_Municipal",
+      "peso": 4,
+      "prioridad": 2
+    },
+    {
+      "id": "P06",
+      "destino": "Escuela_Central",
+      "peso": 10,
+      "prioridad": 2
+    },
+    {
+      "id": "P07",
+      "destino": "Iglesia_San_Jose",
+      "peso": 3,
+      "prioridad": 1
+    },
+    {
+      "id": "P08",
+      "destino": "Clinica_Rural",
+      "peso": 7,
+      "prioridad": 2
+    }
+  ],
+  "camiones": [
+    {
+      "id": "C01",
+      "capacidad": 25
+    },
+    {
+      "id": "C02",
+      "capacidad": 20
+    }
+  ]
+}
