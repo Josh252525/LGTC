@@ -2,7 +2,6 @@ package algoritmos;
 
 import estructuras.*;
 
-
 public class Dijkstra {
 	
 	private Grafo grafo;
@@ -11,26 +10,26 @@ public class Dijkstra {
 		this.grafo = grafo;
 	}
 	
-	// Ahora retorna double[] para respetar las distancias decimales
-	public double[] calcular(int origen) {
+	/**
+	 * Calcula el camino más corto entre un origen y un destino específico.
+	 * Utiliza un arreglo de 'padres' para reconstruir la ruta calle por calle.
+	 */
+	public LinkedList<Integer> calcular(int origen, int destino) {
 		
-		// 1. Tomamos la cantidad real de vértices desde el método seguro
 		int vertices = grafo.getCantidadVertices();
 		
 		double[] distancia = new double[vertices];
 		boolean[] visitado = new boolean[vertices];
+		int[] padre = new int[vertices]; // ¡CLAVE! Aquí guardamos las "migas de pan"
 		
-		// Llenamos las distancias de todos con infinito (Double.MAX_VALUE)
+		// Llenamos las distancias con infinito y los padres con -1
 		for(int i = 0; i < vertices; i++) {
 			distancia[i] = Double.MAX_VALUE;
+			padre[i] = -1; // -1 significa que no tiene predecesor aún
 		}
 		
-		// La distancia hacia sí mismo siempre es 0
 		distancia[origen] = 0;
-		
 		ColaPrioridad cola = new ColaPrioridad(vertices * vertices);
-		
-		// Metemos el nodo inicial a la cola
 		cola.insert(origen, 0.0); 
 		
 		while (!cola.isEmpty()) {
@@ -38,33 +37,49 @@ public class Dijkstra {
 			NodoHeap actual = cola.extraerMin();
 			int u = actual.vertice;
 			
-			// Si ya pasamos por aquí de forma óptima, lo saltamos
+			// Optimización: Si llegamos al destino que buscábamos, podemos detener la búsqueda
+			if (u == destino) {
+			    break;
+			}
+			
 			if(visitado[u]) {
 				continue;
 			}
 			visitado[u] = true;
 			
-			// 2. Traemos la lista enlazada personalizada de los vecinos del nodo actual
 			LinkedList<Conexion> vecinos = grafo.getVecinos(u);
-			
-			// Se itera usando los métodos de la LinkedList
 			int cantidadVecinos = vecinos.size();
+			
 			for (int i = 0; i < cantidadVecinos; i++) {
-				
 				Conexion conexion = vecinos.getAt(i);
 				int v = conexion.destino;
 				double pesoArista = conexion.peso;
 				
-				// Relajación de Dijkstra: Si encontramos un camino más corto, lo actualizamos
+				// Relajación de aristas
 				if (!visitado[v] && distancia[u] + pesoArista < distancia[v]) {
-					
 					distancia[v] = distancia[u] + pesoArista;
-					cola.insert(v, distancia[v]); // Metemos a la cola con su nueva prioridad
-					
+					padre[v] = u; // ¡Guardamos que llegamos a 'v' pasando por 'u'!
+					cola.insert(v, distancia[v]);
 				}
 			}
 		}
 		
-		return distancia;
+		// --- FASE 2: RECONSTRUCCIÓN DEL CAMINO ---
+		LinkedList<Integer> caminoFinal = new LinkedList<>();
+		int actual = destino;
+		
+		// Si el destino no tiene padre y no es el origen, significa que es inalcanzable
+		if (padre[actual] == -1 && actual != origen) {
+		    return caminoFinal; // Retornamos lista vacía
+		}
+		
+		// Retrocedemos desde el destino hasta el origen usando las migas de pan
+		while (actual != -1) {
+		    // Usamos el método de tu compañero para insertar al inicio y que la ruta quede al derecho
+		    caminoFinal.insertAtStart(actual); 
+		    actual = padre[actual];
+		}
+		
+		return caminoFinal;
 	}
 }

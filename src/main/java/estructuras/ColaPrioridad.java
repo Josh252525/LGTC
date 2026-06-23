@@ -2,10 +2,7 @@ package estructuras;
 
 /*
 Complejidad: O(log V) para inserciones y extracciones. 
-
-CORRECCIONES APLICADAS:
-1. Se cambió el parámetro 'prioridad' a double en el método insert().
-2. Se completó el método extraerMin() que es el que Dijkstra llama para sacar 
+Método extraerMin() que es el que Dijkstra llama para sacar 
    el vértice más cercano de la cola.
 */
 public class ColaPrioridad {
@@ -24,7 +21,6 @@ public class ColaPrioridad {
 		return size == 0;
 	}
 	
-	// Ahora recibe un double para no perder los decimales de las distancias
 	public void insert(int vertice, double prioridad) {
         // Si el heap se llena, se evita que el programa colapse
         if (size == capacidad) {

@@ -25,7 +25,7 @@ public class Grafo {
 		listaAdyacencia[destino].insert(new Conexion(origen, peso));
 	}
 	
-	// Método vital para algoritmos como BFS, DFS y Dijkstra
+	
 	public LinkedList<Conexion> getVecinos(int vertice) {
 	    return listaAdyacencia[vertice];
 	}

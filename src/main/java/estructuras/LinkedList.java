@@ -102,7 +102,7 @@ public class LinkedList<T> {
         return -1; // -1 es el estándar para "No se encontró"
     }
 
-    // Nuevo método ÚTIL PARA EL GRAFO: Saber el tamaño de la lista
+    // Saber el tamaño de la lista
     public int size() {
         int count = 0;
         Node<T> n = head;

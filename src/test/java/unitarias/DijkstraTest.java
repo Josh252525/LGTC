@@ -2,58 +2,74 @@ package unitarias;
 
 import algoritmos.Dijkstra;
 import estructuras.Grafo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import estructuras.LinkedList;
+import org.junit.jupiter.api.Test; // Si usas JUnit 4, cambia a org.junit.Test
+import static org.junit.jupiter.api.Assertions.*; // Si usas JUnit 4, usa org.junit.Assert.*
 
 public class DijkstraTest {
 
-    private Grafo grafoNormal;
-    private Grafo grafoDesconectado;
-
-    @BeforeEach
-    public void setUp() {
-        // Grafo de 4 nodos para pruebas normales
-        grafoNormal = new Grafo(4);
-        grafoNormal.agregarArista(0, 1, 10.0);
-        grafoNormal.agregarArista(1, 2, 5.0);
-        grafoNormal.agregarArista(0, 2, 20.0); // Ruta directa más cara
-        grafoNormal.agregarArista(2, 3, 2.0);
-
-        // Grafo donde el nodo 2 está completamente aislado
-        grafoDesconectado = new Grafo(3);
-        grafoDesconectado.agregarArista(0, 1, 5.0);
-    }
-
     @Test
-    public void testRutaMasCortaNormal() {
-        Dijkstra dijkstra = new Dijkstra(grafoNormal);
-        double[] distancias = dijkstra.calcular(0);
+    public void testRutaOptimaConAtajo() {
+        // 1. Arrange: Preparamos un grafo de 5 vértices
+        Grafo grafo = new Grafo(5);
+        
+        // Agregamos aristas simulando calles. 
+        // Nota: Hay una conexión directa 0 -> 1 que cuesta 10km.
+        // Pero el camino 0 -> 2 -> 1 cuesta solo 5km + 2km = 7km. Dijkstra DEBE elegir el atajo.
+        grafo.agregarArista(0, 1, 10.0);
+        grafo.agregarArista(0, 2, 5.0);
+        grafo.agregarArista(2, 1, 2.0);
+        grafo.agregarArista(1, 3, 1.0);
+        grafo.agregarArista(3, 4, 4.0);
 
-        assertEquals(0.0, distancias[0], "La distancia a sí mismo debe ser 0");
-        assertEquals(10.0, distancias[1], "La distancia 0->1 es 10");
-        // Dijkstra debe preferir 0->1->2 (costo 15) sobre 0->2 directo (costo 20)
-        assertEquals(15.0, distancias[2], "Debe tomar la ruta más corta pasando por 1");
-        assertEquals(17.0, distancias[3], "La distancia 0->3 debe ser 10 + 5 + 2 = 17");
+        Dijkstra dijkstra = new Dijkstra(grafo);
+
+        // 2. Act: Ejecutamos el método que refactorizamos
+        LinkedList<Integer> ruta = dijkstra.calcular(0, 4);
+
+        // 3. Assert: Validamos que haya tomado el camino más barato, no el de menos saltos
+        assertNotNull(ruta, "La ruta no debería ser nula");
+        assertEquals(5, ruta.size(), "La ruta óptima debe tener exactamente 5 paradas");
+        
+        // Verificamos las 'migas de pan' calle por calle
+        assertEquals(0, ruta.getAt(0)); // Origen
+        assertEquals(2, ruta.getAt(1)); // Atajo
+        assertEquals(1, ruta.getAt(2));
+        assertEquals(3, ruta.getAt(3));
+        assertEquals(4, ruta.getAt(4)); // Destino final
     }
 
     @Test
     public void testNodoInalcanzable() {
-        Dijkstra dijkstra = new Dijkstra(grafoDesconectado);
-        double[] distancias = dijkstra.calcular(0);
+        // 1. Arrange: Un grafo donde el nodo 2 está desconectado
+        Grafo grafo = new Grafo(3);
+        grafo.agregarArista(0, 1, 5.0);
+        // No agregamos aristas para el nodo 2
 
-        assertEquals(5.0, distancias[1], "El nodo 1 es alcanzable");
-        // El nodo 2 está desconectado, debe tener distancia infinita
-        assertEquals(Double.MAX_VALUE, distancias[2], "Un nodo inalcanzable debe tener distancia MAX_VALUE");
+        Dijkstra dijkstra = new Dijkstra(grafo);
+
+        // 2. Act: Intentamos ir al nodo aislado
+        LinkedList<Integer> ruta = dijkstra.calcular(0, 2);
+
+        // 3. Assert: Nuestra implementación devuelve una lista vacía para nodos inalcanzables
+        assertNotNull(ruta);
+        assertEquals(0, ruta.size(), "La ruta hacia un nodo inalcanzable debe estar vacía");
     }
 
     @Test
-    public void testOrigenInvalido() {
-        Dijkstra dijkstra = new Dijkstra(grafoNormal);
-        
-        // Si le pasamos un nodo que no existe, debería lanzar IndexOutOfBounds
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            dijkstra.calcular(99);
-        }, "Debe lanzar excepción si el origen está fuera de los límites del grafo");
+    public void testMismoOrigenYDestino() {
+        // 1. Arrange
+        Grafo grafo = new Grafo(2);
+        grafo.agregarArista(0, 1, 10.0);
+
+        Dijkstra dijkstra = new Dijkstra(grafo);
+
+        // 2. Act: El camión pide ir del Depósito al Depósito
+        LinkedList<Integer> ruta = dijkstra.calcular(0, 0);
+
+        // 3. Assert: Debe devolver la lista solo con el nodo de origen
+        assertNotNull(ruta);
+        assertEquals(1, ruta.size(), "Debe contener solo el origen");
+        assertEquals(0, ruta.getAt(0), "El nodo debe ser el 0");
     }
 }

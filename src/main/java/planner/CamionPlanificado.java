@@ -5,8 +5,7 @@ import datos.Paquete;
 import estructuras.LinkedList;
 
 /*
-Documentación:
-Clase Wrapper (Envoltura) para gestionar el estado dinámico de carga.
+Clase Wrapper para gestionar el estado dinámico de carga.
 Mantiene el record original intacto pero permite modificar la capacidad 
 restante y almacenar los paquetes asignados por el Best-Fit.
 */

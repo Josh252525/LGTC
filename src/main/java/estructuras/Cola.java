@@ -1,7 +1,6 @@
 package estructuras;
 
 /*
-Documentación:
 Cola Genérica basada en LinkedList.
 Utiliza el principio de Composición: delegamos el manejo de memoria a la lista
 para mantener esta clase limpia y enfocada solo en la lógica FIFO.
