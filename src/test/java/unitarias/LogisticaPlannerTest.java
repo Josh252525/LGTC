@@ -48,15 +48,11 @@ public class LogisticaPlannerTest {
         assertNotNull(resultado, "El resultado no debería ser nulo");
         assertEquals(0, resultado.noAsignados().size(), "Todos los paquetes debieron ser asignados");
 
-        // El paquete P03 (Destino 2, Prioridad 1, 60kg) debió procesarse primero e ir al Camion C1 (único donde cabe)
-        assertEquals(40.0, resultado.flota()[0].getCapacidadRestante(), "C1 debió quedar con 40kg libres (100 - 60)");
+        // El P03 (60kg) y P02 (30kg) se ajustan perfecto en C1 (100kg), dejando 10kg libres.
+        assertEquals(10.0, resultado.flota()[0].getCapacidadRestante(), "C1 debió empacar P03 y P02, quedando con 10kg libres");
         
-        // El P02 (Destino 2, Prioridad 1, 30kg) debió procesarse segundo e ir al C2 (Ajuste más apretado: 50 - 30 = 20 libres vs C1: 40 - 30 = 10 libres)
-        // Ojo: En Best Fit, busca el menor espacio sobrante. En C1 sobra 10, en C2 sobra 20. Así que va a C1.
-        // Verifiquemos cómo quedó C1: 100 - 60(P03) - 30(P02) = 10 libres.
-        // P01 (Destino 3, Prioridad 2, 40kg) no cabe en C1 (sobran 10). Va a C2 (sobran 10).
-        assertEquals(10.0, resultado.flota()[0].getCapacidadRestante(), "C1 debió empacar P03 y P02");
-        assertEquals(10.0, resultado.flota()[1].getCapacidadRestante(), "C2 debió empacar P01");
+        // El P01 (40kg) se va a C2 (50kg), dejando 10kg libres.
+        assertEquals(10.0, resultado.flota()[1].getCapacidadRestante(), "C2 debió empacar P01, quedando con 10kg libres");
     }
 
     @Test
